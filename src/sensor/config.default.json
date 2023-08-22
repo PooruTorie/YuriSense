@@ -1,0 +1,17 @@
+{
+  "version": "1.0.0",
+  "mqtt_port": 1883,
+  "discover_port": 12666,
+  "keep_alive_delay": 3000,
+  "device_types": {
+    "1": "temperature",
+    "2": "light"
+  },
+  "device_type": 1,
+  "debug_data": false,
+  "ssid": "nice_wlan",
+  "password": "devel",
+  "ota": false,
+  "ota_ip": "127.0.0.1",
+  "ota_password": "admin"
+}
