@@ -1,0 +1,13 @@
+{
+  "types": {
+    "temperature": {
+      "version": "1.0.0",
+      "file": "tempi_temperature_1.0.0.bin"
+    },
+    "light": {
+      "version": "1.0.0",
+      "file": "tempi_light_1.0.0.bin"
+    }
+  },
+  "ota_password": "admin"
+}

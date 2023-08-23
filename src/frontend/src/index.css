@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+    height: 100vh;
+}
+
+body {
+    height: 100vh;
+    overflow: hidden;
+}
+
+*::-webkit-scrollbar-thumb {
+    border: 2px solid transparent;
+    border-radius: 100px;
+    background: linear-gradient(180deg, #808080 0%, #606060 99%);
+    background-clip: content-box;
+}
+
+*::-webkit-scrollbar {
+    width: 1vh;
+}
+
+*::-webkit-scrollbar-track {
+    background-color: #c7c7c7;
+    border-radius: 100px;
+    margin: 5px;
+}
+
+#root {
+    height: 100vh;
+}

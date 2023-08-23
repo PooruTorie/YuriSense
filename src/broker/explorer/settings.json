@@ -1,0 +1,26 @@
+{
+  "ConnectionManager_connections": {
+    "0cf553ff-b422-4143-83c4-939fd57a794a": {
+      "configVersion": 1,
+      "certValidation": true,
+      "clientId": "mqtt-explorer-f2cc9b76",
+      "id": "0cf553ff-b422-4143-83c4-939fd57a794a",
+      "name": "MQTT",
+      "encryption": false,
+      "subscriptions": [
+        {
+          "topic": "tempi/#",
+          "qos": 0
+        },
+        {
+          "topic": "#",
+          "qos": 0
+        }
+      ],
+      "type": "mqtt",
+      "host": "broker",
+      "port": 1883,
+      "protocol": "mqtt"
+    }
+  }
+}
