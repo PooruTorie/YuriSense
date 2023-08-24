@@ -16,7 +16,7 @@ if (!interfaceName) {
 
 let addressResult;
 const interfaces = os.networkInterfaces();
-console.log("Interfaces:", Object.keys(interfaces));
+console.log("Interfaces:", Object.entries(interfaces).filter(([n, aa]) => aa.filter(a => a.family === "IPv4" && !a.internal).length > 0).map(([n, a]) => n));
 if (interfaces[interfaceName]) {
     for (const address of interfaces[interfaceName]) {
         if (address.family === "IPv4" && !address.internal) {
