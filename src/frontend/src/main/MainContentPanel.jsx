@@ -30,7 +30,9 @@ export default class MainContentPanel extends Component {
     render() {
         return <Col numColSpan={5} className="h-[101%] overflow-auto">
             <div className="w-full border-none h-max p-4 border-x border-gray-200">
-                <NewSensorManager onUpdate={() => getSensors().then(sensors => this.setState({sensors}))}/>
+                <NewSensorManager onUpdate={
+                    () => getSensors().then(sensors => this.setState({sensors}))
+                }/>
                 {this.state.selectedSensor ? <OverviewContentPanel
                     sensor={this.state.selectedSensor}
                     onClose={() => this.setState({selectedSensor: null})}

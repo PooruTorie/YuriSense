@@ -1,10 +1,8 @@
 import {Component} from "react";
-import {Button, Card, Col} from "@tremor/react";
+import {Button, Card, CategoryBar, Col, Flex, Metric, Text} from "@tremor/react";
 import {getSensorData} from "../../api/api";
 import {CogIcon} from "@heroicons/react/solid";
-import TemperatureSensor from "./TemperatureSensor";
-import DebugSensor from "./DebugSensor";
-import LightSensor from "./LightSensor";
+import {remap} from "../../utils/MathUtils";
 
 export default class SensorCard extends Component {
 
@@ -29,28 +27,35 @@ export default class SensorCard extends Component {
         this.eventSource.close();
     }
 
+    dataFormatter(number: number) {
+        return `${Intl.NumberFormat("de").format(number / 2000 * 100).toString()} %`;
+    }
+
     render() {
         return <Col>
             <Card className="max-w-lg">
-                {(() => {
-                    const overviewButton = <Button icon={CogIcon} onClick={() => {
+                <Flex className="text-center">
+                    <Text className="w-full">{this.props.sensor.name}</Text>
+                    <Button icon={CogIcon} onClick={() => {
                         this.props.doSelect();
-                    }}>Overview</Button>;
-                    switch (this.props.sensor.type) {
-                        case "temperature":
-                            return <TemperatureSensor sensor={this.props.sensor} data={this.state.data}>
-                                {overviewButton}
-                            </TemperatureSensor>
-                        case "light":
-                            return <LightSensor sensor={this.props.sensor} data={this.state.data}>
-                                {overviewButton}
-                            </LightSensor>
-                        default:
-                            return <DebugSensor sensor={this.props.sensor} data={this.state.data}>
-                                {overviewButton}
-                            </DebugSensor>
-                    }
-                })()}
+                    }}>Overview</Button>
+                </Flex>
+                <Flex
+                    justifyContent="start"
+                    alignItems="baseline"
+                    className="space-x-1"
+                >
+                    <Metric>{this.state.data.temp}</Metric>
+                    <Text>°C</Text>
+                </Flex>
+                <CategoryBar
+                    categoryPercentageValues={[25, 15, 15, 25, 25]}
+                    showLabels={false}
+                    showAnimation={true}
+                    colors={["blue", "green", "yellow", "orange", "red"]}
+                    percentageValue={remap(this.state.data.temp, -10, 50, 0, 100)}
+                    className="mt-2"
+                />
             </Card>
         </Col>
     }
