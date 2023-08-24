@@ -14,7 +14,7 @@ services:
       - db
       - broker
     env_file:
-      - "backend/.env"
+      - "src/backend/.env"
   db:
     image: mysql
     environment:
