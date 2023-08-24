@@ -1,42 +1,44 @@
-version: "3.9"
+version: '3.9'
 services:
-  frontend:
-    build: src/frontend
-    depends_on:
-      - db
-      - broker
-    ports:
-      - "80:3000"
-  backend:
-    build: src/backend
-    network_mode: host
-    depends_on:
-      - db
-      - broker
-    env_file:
-      - "src/backend/.env"
-  db:
-    image: mysql
-    environment:
-      - MYSQL_ROOT_PASSWORD=secret
-    volumes:
-      - "./data/db:/var/lib/mysql"
-    ports:
-      - "127.0.0.1:3306:3306"
-  broker:
-    image: eclipse-mosquitto
-    ports:
-      - "1883:1883"
-    volumes:
-      - "./src/broker/mosquitto.conf:/mosquitto/config/mosquitto.conf"
-      - "./src/broker/password_file:/mosquitto/password_file"
-      - "./data/broker/log:/mosquitto/log"
-      - "./data/broker/data:/mosquitto/data"
-  explorer:
-    image: smeagolworms4/mqtt-explorer
-    depends_on:
-      - broker
-    ports:
-      - "127.0.0.1:4000:4000"
-    volumes:
-      - "./src/broker/explorer:/mqtt-explorer/config"
+   frontend:
+      build: src/frontend
+      depends_on:
+         - db
+         - broker
+      ports:
+         - '80:3000'
+   backend:
+      build: src/backend
+      network_mode: host
+      depends_on:
+         - db
+         - broker
+
+      env_file:
+         - 'src/backend/.env'
+   db:
+      image: mysql
+      build: src/db
+      environment:
+         - MYSQL_ROOT_PASSWORD=secret
+      volumes:
+         - './data/db:/var/lib/mysql'
+      ports:
+         - '127.0.0.1:3306:3306'
+   broker:
+      image: eclipse-mosquitto
+      ports:
+         - '1883:1883'
+      volumes:
+         - './src/broker/mosquitto.conf:/mosquitto/config/mosquitto.conf'
+         - './src/broker/password_file:/mosquitto/password_file'
+         - './data/broker/log:/mosquitto/log'
+         - './data/broker/data:/mosquitto/data'
+   explorer:
+      image: smeagolworms4/mqtt-explorer
+      depends_on:
+         - broker
+      ports:
+         - '127.0.0.1:4000:4000'
+      volumes:
+         - './src/broker/explorer:/mqtt-explorer/config'

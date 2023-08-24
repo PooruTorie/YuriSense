@@ -12,10 +12,12 @@ if [ ! -f src/db/schema.sql ]; then
 fi
 
 cd src/backend || wait_exit
+npm i
 node env_collector.js || wait_exit
 cd ../..
 
 cd src/frontend || wait_exit
+npm i
 npm run build || wait_exit
 cd ../..
 
