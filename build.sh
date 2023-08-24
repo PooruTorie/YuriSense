@@ -6,13 +6,18 @@ wait_exit() {
   exit;
 }
 
-cd backend || wait_exit
-node env_collector.js || wait_exit
-cd ..
+if [ ! -f src/db/schema.sql ]; then
+  echo "Please Export the Database Schema to src/db/schema.sql"
+  wait_exit
+fi
 
-cd frontend || wait_exit
+cd src/backend || wait_exit
+node env_collector.js || wait_exit
+cd ../..
+
+cd src/frontend || wait_exit
 npm run build || wait_exit
-cd ..
+cd ../..
 
 docker-compose build || wait_exit
 
