@@ -1,0 +1,6 @@
+data
+docs
+src/sensor
+src/db
+src/broker
+node_modules

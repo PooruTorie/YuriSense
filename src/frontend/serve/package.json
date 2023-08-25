@@ -1,11 +1,11 @@
 {
-  "name": "yurisense-frontend-serve",
-  "version": "1.0.0",
-  "dependencies": {
-    "express": "^4.18.2",
-    "express-proxy-middleware": "^1.0.8"
-  },
-  "scripts": {
-    "start": "node index.js"
-  }
+	"name": "yurisense-frontend-serve",
+	"version": "1.0.0",
+	"dependencies": {
+		"express": "^4.18.2",
+		"express-proxy-middleware": "^1.0.8"
+	},
+	"scripts": {
+		"start": "node index.js"
+	}
 }
