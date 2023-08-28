@@ -1,5 +1,5 @@
 import {Router} from "express"
-import TempiAPI from "../tempi_api"
+import YurisenseAPI from "../yurisense_api"
 import {EventEmitter} from "events"
 
 export default class RealtimeRouter {
@@ -7,7 +7,7 @@ export default class RealtimeRouter {
 	static route: string = "/realtime"
 	private readonly router: Router
 
-	constructor(api: TempiAPI) {
+	constructor(api: YurisenseAPI) {
 		this.router = Router()
 
 		this.router.get("/", async (req, res) => {

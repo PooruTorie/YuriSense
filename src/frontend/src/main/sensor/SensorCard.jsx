@@ -11,6 +11,7 @@ export default class SensorCard extends RealtimeComponent {
 	}
 
 	componentDidMount() {
+		super.componentDidMount()
 		getSensorData(this.props.sensor.uuid).then((data) => this.setState({data}))
 	}
 

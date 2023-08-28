@@ -1,5 +1,5 @@
 import {Router} from "express"
-import TempiAPI from "../tempi_api"
+import YurisenseAPI from "../yurisense_api"
 import * as fs from "fs"
 import SensorUpdater from "../../updater/sensor_updater"
 
@@ -7,7 +7,7 @@ export default class UpdatesRouter {
 	static route: string = "/updates"
 	private readonly router: Router
 
-	constructor(api: TempiAPI) {
+	constructor(api: YurisenseAPI) {
 		this.router = Router()
 
 		this.router.get("/newest/:type", async (req, res) => {

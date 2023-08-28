@@ -9,7 +9,7 @@
       "encryption": false,
       "subscriptions": [
         {
-          "topic": "tempi/#",
+          "topic": "yurisense/#",
           "qos": 0
         },
         {

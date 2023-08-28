@@ -60,6 +60,7 @@ export default class NewSensorManager extends RealtimeComponent {
 	}
 
 	componentDidMount() {
+		super.componentDidMount()
 		getNewSensorUUIDs().then((sensors) => this.setState({sensors}))
 	}
 

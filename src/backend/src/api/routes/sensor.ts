@@ -1,11 +1,11 @@
 import {Router} from "express"
-import TempiAPI from "../tempi_api"
+import YurisenseAPI from "../yurisense_api"
 
 export default class SensorRouter {
 	static route: string = "/sensor"
 	private readonly router: Router
 
-	constructor(api: TempiAPI) {
+	constructor(api: YurisenseAPI) {
 		this.router = Router()
 
 		this.router.get("/new", async (req, res) => {

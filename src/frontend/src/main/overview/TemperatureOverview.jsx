@@ -11,6 +11,7 @@ export default class TemperatureOverview extends RealtimeComponent {
 	}
 
 	componentDidMount() {
+		super.componentDidMount()
 		getSensorDataTimeline(this.props.sensor.uuid, "temp").then((data) =>
 			this.setState({
 				chartData: data.map((dataEntry) => {

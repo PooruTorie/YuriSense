@@ -15,12 +15,13 @@ export default class SensorSettings extends RealtimeComponent {
 			loading: false,
 			nameError: undefined,
 			name: this.props.sensor.name,
-			speed: this.props.settings.pullSpeed,
+			speed: this.props.settings?.pullSpeed || 0,
 			speedError: undefined
 		}
 	}
 
 	componentDidMount() {
+		super.componentDidMount()
 		getNewestVersion(this.props.sensor.type).then((d) => this.setState({newestVersion: d.version}))
 	}
 

@@ -1,11 +1,11 @@
 import {Router} from "express"
-import TempiAPI from "../tempi_api"
+import YurisenseAPI from "../yurisense_api"
 
 export default class UserRouter {
 	static route: string = "/user"
 	private readonly router: Router
 
-	constructor(api: TempiAPI) {
+	constructor(api: YurisenseAPI) {
 		this.router = Router()
 
 		this.router.post("/signup", async (req, res) => {
