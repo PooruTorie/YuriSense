@@ -1,0 +1,16 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"type": "node",
+			"request": "launch",
+			"name": "Debug TypeScript Backend",
+			"runtimeExecutable": "${workspaceFolder}/node_modules/.bin/ts-node",
+			"args": ["--project", "tsconfig.json", "src/index.ts"],
+			"sourceMaps": true,
+			"outFiles": ["${workspaceFolder}/build/**/*.js"],
+			"console": "integratedTerminal",
+			"skipFiles": ["<node_internals>/**/*.js"]
+		}
+	]
+}

@@ -1,5 +1,6 @@
 import {createPool, Pool, RowDataPacket} from "mysql2/promise"
 import {Sensor} from "../mqtt/mqtt_client"
+const argon2 = require("argon2")
 
 export default class DataBase {
 	private connection: Pool
@@ -130,25 +131,54 @@ export default class DataBase {
 		return rows.length == 0
 	}
 
-	async createUser(username: string, password: string, isAdmin: boolean) {
-		if (!username || !password || !isAdmin) {
+	async createUser(username: string, email: string, password: string, admin: boolean) {
+		if (!username || !password || !admin || !email) {
 			return false
 		}
 
 		try {
+			const hash = await argon2.hash(password)
 			// Assuming this.connection is a valid database connection
 			await this.connection.execute(
-				"INSERT INTO User (username, password, admin) VALUES (:username, :password, :admin)",
+				"INSERT INTO User (username, email, password, admin) VALUES (:username, :email, :password, :admin)",
 				{
 					username: username,
-					password: password,
-					admin: isAdmin
+					email: email,
+					password: hash,
+					admin: admin
 				}
 			)
 			return true
 		} catch (error) {
 			console.error("Error creating user:", error)
 			return false
+		}
+	}
+
+	async getUserByEmail(email: string) {
+		if (!email) {
+			return null
+		}
+
+		try {
+			const [rows, fields] = await this.connection.query<RowDataPacket[]>(
+				"SELECT id, username, password, admin FROM User WHERE email = :email",
+				{email}
+			)
+			if (!(rows.length === 1)) {
+				return null
+			}
+
+			return rows.length > 0
+				? {
+						id: (rows[0].id as string) ? (rows[0].id as string) : "",
+						username: (rows[0].username as string) ? (rows[0].username as string) : "",
+						password: (rows[0].password as string) ? (rows[0].password as string) : "",
+						admin: (rows[0].admin as string) ? (rows[0].admin as string) : ""
+				  }
+				: null
+		} catch (err) {
+			console.error("Error: " + err)
 		}
 	}
 }

@@ -52,7 +52,8 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `yurisense`.`User` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `username` VARCHAR(50) NOT NULL,
-  `password` CHAR(64) NOT NULL,
+  `email` VARCHAR(100) NOT NULL UNIQUE,
+  `password` CHAR(97) NOT NULL,
   `admin` TINYINT NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;

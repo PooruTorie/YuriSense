@@ -13,7 +13,8 @@ services:
       depends_on:
          - db
          - broker
-
+      environment:
+         - SECRET_KEY=yuriAuthKey
       env_file:
          - "src/backend/.env"
    db:
