@@ -1,6 +1,5 @@
 import {createPool, Pool, RowDataPacket} from "mysql2/promise"
 import {Sensor} from "../mqtt/mqtt_client"
-const bcrypt = require("bcrypt")
 
 export default class DataBase {
 	private connection: Pool
@@ -23,11 +22,7 @@ export default class DataBase {
 		return rows.length > 0 ? rows[0].name : null
 	}
 
-	async collectSensorData(
-		sensor: Sensor,
-		messageLabel: string,
-		message: Buffer
-	) {
+	async collectSensorData(sensor: Sensor, messageLabel: string, message: Buffer) {
 		await this.connection.execute(
 			"INSERT IGNORE INTO SensorData (sensor, value, label) VALUES (:uuid, :value, :label)",
 			{
@@ -69,17 +64,12 @@ export default class DataBase {
 	}
 
 	async getNewSensors(): Promise<string[]> {
-		const [rows, fields] = await this.connection.query<RowDataPacket[]>(
-			"SELECT uuid FROM Sensor WHERE name IS NULL"
-		)
+		const [rows, fields] = await this.connection.query<RowDataPacket[]>("SELECT uuid FROM Sensor WHERE name IS NULL")
 		return rows.map((value) => value.uuid)
 	}
 
 	async setName(uuid: string, name: string) {
-		await this.connection.execute(
-			"UPDATE Sensor SET name=:name WHERE uuid=:uuid",
-			{uuid, name}
-		)
+		await this.connection.execute("UPDATE Sensor SET name=:name WHERE uuid=:uuid", {uuid, name})
 	}
 
 	async checkUUID(uuid: string) {
@@ -110,13 +100,10 @@ export default class DataBase {
 	}
 
 	async sensorAlive(sensor: Sensor) {
-		await this.connection.execute(
-			"UPDATE Sensor SET connected=:ip WHERE uuid=:uuid",
-			{
-				uuid: sensor.uuid,
-				ip: sensor.ip
-			}
-		)
+		await this.connection.execute("UPDATE Sensor SET connected=:ip WHERE uuid=:uuid", {
+			uuid: sensor.uuid,
+			ip: sensor.ip
+		})
 	}
 
 	async allSensorsDead() {
@@ -132,10 +119,7 @@ export default class DataBase {
 	}
 
 	async sensorDead(sensor: Sensor) {
-		await this.connection.execute(
-			"UPDATE Sensor SET connected=NULL WHERE uuid=:uuid",
-			{uuid: sensor.uuid}
-		)
+		await this.connection.execute("UPDATE Sensor SET connected=NULL WHERE uuid=:uuid", {uuid: sensor.uuid})
 	}
 
 	private async isNew(sensor: Sensor) {
@@ -146,7 +130,7 @@ export default class DataBase {
 		return rows.length == 0
 	}
 
-	async createUser(username: String, password: String, isAdmin: Boolean) {
+	async createUser(username: string, password: string, isAdmin: boolean) {
 		if (!username || !password || !isAdmin) {
 			return false
 		}

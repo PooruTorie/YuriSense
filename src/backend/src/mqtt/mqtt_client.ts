@@ -65,12 +65,7 @@ export class Sensor extends EventEmitter {
 	private _alive: number = 10
 	private readonly _aliveInterval: NodeJS.Timer
 
-	constructor(
-		connection: MqttClient,
-		uuid: string,
-		ip: string,
-		initCallback: Function
-	) {
+	constructor(connection: MqttClient, uuid: string, ip: string, initCallback: Function) {
 		super()
 		this.setMaxListeners(50)
 		this.connection = connection
@@ -125,16 +120,7 @@ export class Sensor extends EventEmitter {
 	}
 
 	toString() {
-		return (
-			"Sensor {" +
-			"ip: " +
-			this._ip +
-			", uuid: " +
-			this._uuid +
-			", topic: " +
-			this._topic +
-			"}"
-		)
+		return "Sensor {" + "ip: " + this._ip + ", uuid: " + this._uuid + ", topic: " + this._topic + "}"
 	}
 
 	alive(ip: string) {

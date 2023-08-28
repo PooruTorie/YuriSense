@@ -18,12 +18,7 @@ export default class TempiAPI {
 	private app: Express
 	private readonly port: number
 
-	constructor(
-		port: number,
-		database: DataBase,
-		mqtt: MqttDataWorker,
-		discoveryPort: number
-	) {
+	constructor(port: number, database: DataBase, mqtt: MqttDataWorker, discoveryPort: number) {
 		this.app = express()
 		this.port = port
 		this.database = database
@@ -36,20 +31,15 @@ export default class TempiAPI {
 		this.app.use(bodyParser.json())
 
 		// add logger
-		this.app.use(
-			log4js.connectLogger(log4js.getLogger("api"), {level: "debug"})
-		)
+		this.app.use(log4js.connectLogger(log4js.getLogger("api"), {level: "debug"}))
 
 		SensorDiscovery.setup(discoveryPort)
 
 		this.app.get("/api/discover", async (req, res) => {
-			res.json(await SensorDiscovery.startDiscovery(discoveryPort))
+			res.json(SensorDiscovery.startDiscovery(discoveryPort))
 		})
 		this.app.use("/api" + SensorRouter.route, new SensorRouter(this).get())
-		this.app.use(
-			"/api" + RealtimeRouter.route,
-			new RealtimeRouter(this).get()
-		)
+		this.app.use("/api" + RealtimeRouter.route, new RealtimeRouter(this).get())
 		this.app.use("/api" + UpdatesRouter.route, new UpdatesRouter(this).get())
 		this.app.use("/api" + UserRouter.route, new UserRouter(this).get())
 	}

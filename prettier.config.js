@@ -8,6 +8,7 @@ module.exports = {
 	quoteProps: "consistent",
 	bracketSpacing: false,
 	bracketSameLine: false,
+	printWidth: 120,
 	overrides: [
 		{
 			files: ["*.js", "*.jsx"],

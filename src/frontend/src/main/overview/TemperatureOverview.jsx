@@ -1,10 +1,10 @@
-import {Component} from "react"
 import {Card, Col, Grid, LineChart, Metric, Title} from "@tremor/react"
 import {addHours, subDays, subHours, subMinutes} from "date-fns"
 import SensorSettings from "./SensorSettings"
 import {getSensorDataTimeline} from "../../api/api"
+import RealtimeComponent from "../../utils/RealtimeComponent"
 
-export default class TemperatureOverview extends Component {
+export default class TemperatureOverview extends RealtimeComponent {
 	constructor(props) {
 		super(props)
 		this.state = {chartData: [], filter: "Max"}
@@ -19,7 +19,9 @@ export default class TemperatureOverview extends Component {
 				})
 			})
 		)
-		this.eventSource = new EventSource("/api/realtime")
+	}
+
+	componentRealtimeEventSourceMount() {
 		this.eventSource.addEventListener(this.props.sensor.uuid, (e) => {
 			this.setState({
 				chartData: [
@@ -33,14 +35,9 @@ export default class TemperatureOverview extends Component {
 		})
 	}
 
-	componentWillUnmount() {
-		this.eventSource.close()
-	}
-
 	getFilteredData(period) {
 		if (this.state.chartData.length > 0) {
-			const lastAvailableDate =
-				this.state.chartData[this.state.chartData.length - 1].timestamp
+			const lastAvailableDate = this.state.chartData[this.state.chartData.length - 1].timestamp
 			let periodStartDate = null
 			switch (period) {
 				case "M":
@@ -55,12 +52,12 @@ export default class TemperatureOverview extends Component {
 				case "W":
 					periodStartDate = subDays(lastAvailableDate, 7)
 					break
+				default:
+					periodStartDate = lastAvailableDate
 			}
 			if (periodStartDate) {
 				return this.state.chartData.filter(
-					(item) =>
-						item.timestamp >= periodStartDate &&
-						item.timestamp <= lastAvailableDate
+					(item) => item.timestamp >= periodStartDate && item.timestamp <= lastAvailableDate
 				)
 			} else {
 				return this.state.chartData
@@ -70,21 +67,17 @@ export default class TemperatureOverview extends Component {
 	}
 
 	render() {
-		const filteredData = this.getFilteredData(this.state.filter).map(
-			(dataEntry) => {
-				dataEntry.timestamp = dataEntry.timestamp.toLocaleString()
-				return dataEntry
-			}
-		)
+		const filteredData = this.getFilteredData(this.state.filter).map((dataEntry) => {
+			dataEntry.timestamp = dataEntry.timestamp.toLocaleString()
+			return dataEntry
+		})
 		return (
 			<Grid className="mt-6" numCols="2">
 				<Col className="m-2">
 					<Card>
 						<Title>
 							<Metric>
-								{filteredData.length > 0
-									? filteredData[filteredData.length - 1].value
-									: null}
+								{filteredData.length > 0 ? filteredData[filteredData.length - 1].value : null}
 								°C
 							</Metric>
 							Temperature Chart
@@ -118,10 +111,7 @@ export default class TemperatureOverview extends Component {
 					</Card>
 				</Col>
 				<Col className="m-2">
-					<SensorSettings
-						sensor={this.props.sensor}
-						settings={this.props.settings}
-					/>
+					<SensorSettings sensor={this.props.sensor} settings={this.props.settings} />
 				</Col>
 			</Grid>
 		)

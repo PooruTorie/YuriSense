@@ -1,6 +1,5 @@
 import {Router} from "express"
 import TempiAPI from "../tempi_api"
-import * as fs from "fs"
 
 export default class UserRouter {
 	static route: string = "/user"
@@ -15,7 +14,7 @@ export default class UserRouter {
 				return res.sendStatus(400)
 			}
 
-			if (isAdmin != (true || false)) {
+			if (typeof isAdmin != "boolean") {
 				return res.status(400).json({error: "isAdmin is not type boolean"})
 			}
 

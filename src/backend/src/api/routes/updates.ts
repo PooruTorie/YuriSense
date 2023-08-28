@@ -11,9 +11,7 @@ export default class UpdatesRouter {
 		this.router = Router()
 
 		this.router.get("/newest/:type", async (req, res) => {
-			const config = JSON.parse(
-				fs.readFileSync("updates/config.json", {encoding: "utf8"})
-			)
+			const config = JSON.parse(fs.readFileSync("updates/config.json", {encoding: "utf8"}))
 
 			if (config.types[req.params.type]) {
 				res.json({version: config.types[req.params.type].version})
@@ -23,9 +21,7 @@ export default class UpdatesRouter {
 		})
 
 		this.router.get("/update/:uuid", async (req, res) => {
-			const sensor = api.mqtt
-				.getSensors()
-				.find((sensor) => sensor.uuid == req.params.uuid)
+			const sensor = api.mqtt.getSensors().find((sensor) => sensor.uuid == req.params.uuid)
 
 			if (sensor) {
 				const update = SensorUpdater.update(sensor)

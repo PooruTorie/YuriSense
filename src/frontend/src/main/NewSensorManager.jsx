@@ -1,16 +1,7 @@
 import {Component} from "react"
-import {
-	Button,
-	Card,
-	Metric,
-	Table,
-	TableBody,
-	TableHead,
-	TableHeaderCell,
-	TableRow,
-	TextInput
-} from "@tremor/react"
+import {Button, Card, Metric, Table, TableBody, TableHead, TableHeaderCell, TableRow, TextInput} from "@tremor/react"
 import {getNewSensorUUIDs, setSensorName} from "../api/api"
+import RealtimeComponent from "../utils/RealtimeComponent"
 
 class AddNewSensor extends Component {
 	constructor(props) {
@@ -27,18 +18,14 @@ class AddNewSensor extends Component {
 		if (this.state.show) {
 			return (
 				<TableRow>
-					<TableHeaderCell className="align-middle">
-						{this.props.uuid}
-					</TableHeaderCell>
+					<TableHeaderCell className="align-middle">{this.props.uuid}</TableHeaderCell>
 					<TableHeaderCell>
 						<TextInput
 							error={this.state.error !== null}
 							errorMessage={this.state.error}
 							value={this.state.name}
 							placeholder="Name"
-							onChange={(event) =>
-								this.setState({name: event.target.value})
-							}
+							onChange={(event) => this.setState({name: event.target.value})}
 						/>
 					</TableHeaderCell>
 					<TableHeaderCell>
@@ -46,10 +33,7 @@ class AddNewSensor extends Component {
 							loading={this.state.loading}
 							onClick={() => {
 								this.setState({loading: true})
-								setSensorName(
-									this.props.uuid,
-									this.state.name.trim()
-								).then((res) => {
+								setSensorName(this.props.uuid, this.state.name.trim()).then((res) => {
 									if (res.error) {
 										this.setState({loading: false, error: res.error})
 									} else {
@@ -69,7 +53,7 @@ class AddNewSensor extends Component {
 	}
 }
 
-export default class NewSensorManager extends Component {
+export default class NewSensorManager extends RealtimeComponent {
 	constructor(props) {
 		super(props)
 		this.state = {sensors: []}
@@ -77,24 +61,16 @@ export default class NewSensorManager extends Component {
 
 	componentDidMount() {
 		getNewSensorUUIDs().then((sensors) => this.setState({sensors}))
-		this.eventSource = new EventSource("/api/realtime")
-		this.eventSource.addEventListener("new", (e) =>
-			this.setState({sensors: [...this.state.sensors, e.data]})
-		)
 	}
 
-	componentWillUnmount() {
-		this.eventSource.close()
+	componentRealtimeEventSourceMount() {
+		this.eventSource.addEventListener("new", (e) => this.setState({sensors: [...this.state.sensors, e.data]}))
 	}
 
 	render() {
 		if (this.state.sensors.length > 0) {
 			return (
-				<Card
-					className="my-6 w-full"
-					decoration="bottom"
-					decorationColor="amber"
-				>
+				<Card className="my-6 w-full" decoration="bottom" decorationColor="amber">
 					<Metric>New Sensors Found</Metric>
 					<Table>
 						<TableHead>
@@ -111,9 +87,7 @@ export default class NewSensorManager extends Component {
 									uuid={uuid}
 									onRemove={() => {
 										this.setState({
-											sensors: this.state.sensors.filter(
-												(v) => v !== uuid
-											)
+											sensors: this.state.sensors.filter((v) => v !== uuid)
 										})
 										this.props.onUpdate()
 									}}

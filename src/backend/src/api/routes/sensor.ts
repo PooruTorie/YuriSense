@@ -13,11 +13,7 @@ export default class SensorRouter {
 		})
 
 		this.router.put("/known", async (req, res) => {
-			if (
-				!["uuid", "name"].every((val) =>
-					Object.keys(req.body).includes(val)
-				)
-			) {
+			if (!["uuid", "name"].every((val) => Object.keys(req.body).includes(val))) {
 				res.json({error: "Not all parameter fulfilled."})
 				return
 			}
@@ -46,9 +42,7 @@ export default class SensorRouter {
 		})
 
 		this.router.get("/:uuid/settings", async (req, res) => {
-			const sensor = api.mqtt
-				.getSensors()
-				.find((s) => s.uuid == req.params.uuid)
+			const sensor = api.mqtt.getSensors().find((s) => s.uuid == req.params.uuid)
 			if (sensor) {
 				res.json(sensor.settings)
 			} else {
@@ -57,10 +51,7 @@ export default class SensorRouter {
 		})
 
 		this.router.get("/:uuid/:label", async (req, res) => {
-			const rawData = await api.database.getSensorData(
-				req.params.uuid,
-				req.params.label
-			)
+			const rawData = await api.database.getSensorData(req.params.uuid, req.params.label)
 			res.json(
 				rawData.map((rawDataObject) => {
 					rawDataObject.value = rawDataObject.value.toString()

@@ -11,9 +11,7 @@ export default class OverviewContentPanel extends Component {
 	}
 
 	componentDidMount() {
-		getSensorSettings(this.props.sensor.uuid).then((d) =>
-			this.setState({settings: d})
-		)
+		getSensorSettings(this.props.sensor.uuid).then((d) => this.setState({settings: d}))
 	}
 
 	render() {
@@ -30,10 +28,7 @@ export default class OverviewContentPanel extends Component {
 						Close
 					</Button>
 				</Flex>
-				<TemperatureOverview
-					sensor={this.props.sensor}
-					settings={this.state.settings}
-				/>
+				<TemperatureOverview sensor={this.props.sensor} settings={this.state.settings} />
 			</>
 		)
 	}

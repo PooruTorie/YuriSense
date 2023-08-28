@@ -1,28 +1,24 @@
-import {Component} from "react"
 import {Button, Card, CategoryBar, Col, Flex, Metric, Text} from "@tremor/react"
 import {getSensorData} from "../../api/api"
 import {CogIcon} from "@heroicons/react/solid"
 import {remap} from "../../utils/MathUtils"
+import RealtimeComponent from "../../utils/RealtimeComponent"
 
-export default class SensorCard extends Component {
+export default class SensorCard extends RealtimeComponent {
 	constructor(props) {
 		super(props)
 		this.state = {data: {}}
 	}
 
 	componentDidMount() {
-		getSensorData(this.props.sensor.uuid).then((data) =>
-			this.setState({data})
-		)
-		this.eventSource = new EventSource("/api/realtime")
+		getSensorData(this.props.sensor.uuid).then((data) => this.setState({data}))
+	}
+
+	componentRealtimeEventSourceMount() {
 		this.eventSource.addEventListener(this.props.sensor.uuid, (e) => {
 			const data = JSON.parse(e.data)
 			this.setState({data})
 		})
-	}
-
-	componentWillUnmount() {
-		this.eventSource.close()
 	}
 
 	dataFormatter(number: number) {
@@ -46,11 +42,7 @@ export default class SensorCard extends Component {
 							Overview
 						</Button>
 					</Flex>
-					<Flex
-						justifyContent="start"
-						alignItems="baseline"
-						className="space-x-1"
-					>
+					<Flex justifyContent="start" alignItems="baseline" className="space-x-1">
 						<Metric>{this.state.data.temp}</Metric>
 						<Text>°C</Text>
 					</Flex>

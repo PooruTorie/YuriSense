@@ -1,18 +1,9 @@
-import {Component} from "react"
-import {
-	Badge,
-	Button,
-	Callout,
-	Card,
-	ProgressBar,
-	Text,
-	TextInput,
-	Title
-} from "@tremor/react"
+import {Badge, Button, Callout, Card, ProgressBar, Text, TextInput, Title} from "@tremor/react"
 import {ArrowCircleUpIcon} from "@heroicons/react/solid"
 import {getNewestVersion, setSensorName, updateSensor} from "../../api/api"
+import RealtimeComponent from "../../utils/RealtimeComponent"
 
-export default class SensorSettings extends Component {
+export default class SensorSettings extends RealtimeComponent {
 	constructor(props) {
 		super(props)
 		this.state = {
@@ -30,10 +21,10 @@ export default class SensorSettings extends Component {
 	}
 
 	componentDidMount() {
-		getNewestVersion(this.props.sensor.type).then((d) =>
-			this.setState({newestVersion: d.version})
-		)
-		this.eventSource = new EventSource("/api/realtime")
+		getNewestVersion(this.props.sensor.type).then((d) => this.setState({newestVersion: d.version}))
+	}
+
+	componentRealtimeEventSourceMount() {
 		this.eventSource.addEventListener("update_state", (e) => {
 			const data = JSON.parse(e.data)
 			this.setState({
@@ -46,10 +37,6 @@ export default class SensorSettings extends Component {
 				updateProgress: data
 			})
 		})
-	}
-
-	componentWillUnmount() {
-		this.eventSource.close()
 	}
 
 	update() {
@@ -70,18 +57,11 @@ export default class SensorSettings extends Component {
 				{this.state.update || !!this.state.updateError ? (
 					<Callout
 						className="mt-4 mb-3"
-						title={
-							!this.state.updateError
-								? "Update Log"
-								: "Error: " + this.state.updateError
-						}
+						title={!this.state.updateError ? "Update Log" : "Error: " + this.state.updateError}
 						color={!this.state.updateError ? "teal" : "red"}
 					>
 						<ProgressBar
-							percentageValue={
-								(this.state.updateProgress.current * 100) /
-								this.state.updateProgress.total
-							}
+							percentageValue={(this.state.updateProgress.current * 100) / this.state.updateProgress.total}
 							color="teal"
 							className="mt-3"
 						/>
@@ -101,18 +81,15 @@ export default class SensorSettings extends Component {
 								icon={ArrowCircleUpIcon}
 								onClick={() => {
 									this.setState({update: true})
-									updateSensor(this.props.sensor.uuid).then(
-										(state) => {
-											this.setState({
-												updateError: state.error,
-												update: false
-											})
-											if (state.success) {
-												this.props.sensor.version =
-													this.state.newestVersion
-											}
+									updateSensor(this.props.sensor.uuid).then((state) => {
+										this.setState({
+											updateError: state.error,
+											update: false
+										})
+										if (state.success) {
+											this.props.sensor.version = this.state.newestVersion
 										}
-									)
+									})
 								}}
 							>
 								Update to {this.state.newestVersion}
@@ -129,10 +106,7 @@ export default class SensorSettings extends Component {
 					errorMessage={this.state.nameError}
 					onChange={(e) =>
 						this.setState({
-							nameError:
-								e.target.value.trim() === ""
-									? "Name can not be Empty"
-									: undefined,
+							nameError: e.target.value.trim() === "" ? "Name can not be Empty" : undefined,
 							name: e.target.value
 						})
 					}
@@ -147,8 +121,7 @@ export default class SensorSettings extends Component {
 						try {
 							const v = parseInt(e.target.value)
 							this.setState({
-								speedError:
-									v <= 0 ? "Speed can't be zero or less" : undefined,
+								speedError: v <= 0 ? "Speed can't be zero or less" : undefined,
 								speed: v
 							})
 						} catch (e) {

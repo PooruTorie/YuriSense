@@ -1,11 +1,11 @@
-import {Component} from "react"
 import {Col, Grid, Metric, Text} from "@tremor/react"
 import NewSensorManager from "./NewSensorManager"
 import SensorCard from "./sensor/SensorCard"
 import {getSensors} from "../api/api"
 import OverviewContentPanel from "./overview/OverviewContentPanel"
+import RealtimeComponent from "../utils/RealtimeComponent"
 
-export default class MainContentPanel extends Component {
+export default class MainContentPanel extends RealtimeComponent {
 	constructor(props) {
 		super(props)
 		this.state = {sensors: [], selectedSensor: null}
@@ -13,12 +13,12 @@ export default class MainContentPanel extends Component {
 
 	componentDidMount() {
 		getSensors().then((sensors) => this.setState({sensors}))
-		this.eventSource = new EventSource("/api/realtime")
+	}
+
+	componentRealtimeEventSourceMount() {
 		this.eventSource.addEventListener("disconnect", (e) =>
 			this.setState({
-				sensors: this.state.sensors.filter(
-					(sensor) => sensor.uuid !== e.data
-				)
+				sensors: this.state.sensors.filter((sensor) => sensor.uuid !== e.data)
 			})
 		)
 		this.eventSource.addEventListener("connect", (e) =>
@@ -26,19 +26,11 @@ export default class MainContentPanel extends Component {
 		)
 	}
 
-	componentWillUnmount() {
-		this.eventSource.close()
-	}
-
 	render() {
 		return (
 			<Col numColSpan={5} className="h-[101%] overflow-auto">
 				<div className="w-full border-none h-max p-4 border-x border-gray-200">
-					<NewSensorManager
-						onUpdate={() =>
-							getSensors().then((sensors) => this.setState({sensors}))
-						}
-					/>
+					<NewSensorManager onUpdate={() => getSensors().then((sensors) => this.setState({sensors}))} />
 					{this.state.selectedSensor ? (
 						<OverviewContentPanel
 							sensor={this.state.selectedSensor}
@@ -51,12 +43,7 @@ export default class MainContentPanel extends Component {
 
 							<Grid className="mt-6" numCols={this.state.sensors.length}>
 								{this.state.sensors.map((sensor) => (
-									<SensorCard
-										sensor={sensor}
-										doSelect={() =>
-											this.setState({selectedSensor: sensor})
-										}
-									/>
+									<SensorCard sensor={sensor} doSelect={() => this.setState({selectedSensor: sensor})} />
 								))}
 							</Grid>
 						</>
