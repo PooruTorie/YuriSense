@@ -1,5 +1,5 @@
 // @ts-ignore
-import express, {Express, Router} from "express"
+import express, {Express} from "express"
 import DataBase from "../db/db_connection"
 
 import SensorRouter from "./routes/sensor"
@@ -11,18 +11,21 @@ import * as log4js from "log4js"
 import MqttDataWorker from "../mqtt/mqtt_dataworker"
 import UpdatesRouter from "./routes/updates"
 import UserRouter from "./routes/user"
+import AuthMiddleware from "../middleware/auth"
 
 export default class YurisenseAPI {
 	public database: DataBase
 	public mqtt: MqttDataWorker
 	private app: Express
 	private readonly port: number
+	public readonly auth: AuthMiddleware
 
 	constructor(port: number, database: DataBase, mqtt: MqttDataWorker, discoveryPort: number) {
 		this.app = express()
 		this.port = port
 		this.database = database
 		this.mqtt = mqtt
+		this.auth = new AuthMiddleware()
 
 		// parse application/x-www-form-urlencoded
 		this.app.use(bodyParser.urlencoded({extended: false}))

@@ -52,10 +52,14 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `yurisense`.`User` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `username` VARCHAR(50) NOT NULL,
-  `email` VARCHAR(100) NOT NULL UNIQUE,
+  `email` VARCHAR(100) NOT NULL,
   `password` CHAR(97) NOT NULL,
   `admin` TINYINT NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`))
+  `firstName` VARCHAR(50) NOT NULL,
+  `lastName` VARCHAR(50) NOT NULL,
+  `phone` VARCHAR(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE)
 ENGINE = InnoDB;
 
 

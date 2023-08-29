@@ -1,4 +1,4 @@
-import {createPool, Pool, RowDataPacket} from "mysql2/promise"
+import {createPool, Field, FieldPacket, Pool, ResultSetHeader, RowDataPacket} from "mysql2/promise"
 import {Sensor} from "../mqtt/mqtt_client"
 const argon2 = require("argon2")
 
@@ -131,54 +131,33 @@ export default class DataBase {
 		return rows.length == 0
 	}
 
-	async createUser(username: string, email: string, password: string, admin: boolean) {
-		if (!username || !password || !admin || !email) {
-			return false
-		}
-
-		try {
-			const hash = await argon2.hash(password)
-			// Assuming this.connection is a valid database connection
-			await this.connection.execute(
-				"INSERT INTO User (username, email, password, admin) VALUES (:username, :email, :password, :admin)",
-				{
-					username: username,
-					email: email,
-					password: hash,
-					admin: admin
-				}
-			)
-			return true
-		} catch (error) {
-			console.error("Error creating user:", error)
-			return false
-		}
+	async createUser(
+		username: string,
+		email: string,
+		password: string,
+		admin: boolean,
+		firstName: string,
+		lastName: string,
+		phone: string
+	) {
+		const hash = await argon2.hash(password)
+		// Assuming this.connection is a valid database connection
+		const result: [ResultSetHeader, FieldPacket[]] = await this.connection.execute(
+			"INSERT INTO User (username, email, password, admin, firstName, lastName, phone) VALUES (:username, :email, :hash, :admin, :firstName, :lastName, :phone)",
+			{username, email, hash, admin, firstName, lastName, phone}
+		)
+		return result[0].insertId
 	}
 
 	async getUserByEmail(email: string) {
-		if (!email) {
+		const [rows, fields] = await this.connection.query<RowDataPacket[]>(
+			"SELECT id, username, password, admin FROM User WHERE email = :email",
+			{email}
+		)
+		if (rows.length == 0) {
 			return null
 		}
 
-		try {
-			const [rows, fields] = await this.connection.query<RowDataPacket[]>(
-				"SELECT id, username, password, admin FROM User WHERE email = :email",
-				{email}
-			)
-			if (!(rows.length === 1)) {
-				return null
-			}
-
-			return rows.length > 0
-				? {
-						id: (rows[0].id as string) ? (rows[0].id as string) : "",
-						username: (rows[0].username as string) ? (rows[0].username as string) : "",
-						password: (rows[0].password as string) ? (rows[0].password as string) : "",
-						admin: (rows[0].admin as string) ? (rows[0].admin as string) : ""
-				  }
-				: null
-		} catch (err) {
-			console.error("Error: " + err)
-		}
+		return rows[0]
 	}
 }

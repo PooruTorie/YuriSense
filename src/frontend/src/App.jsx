@@ -1,12 +1,11 @@
 import {Component} from "react"
 import TopBar from "./menu/TopBar"
 import MainContentPanel from "./main/MainContentPanel"
-import {Grid} from "@tremor/react"
+import {Button, Card, Grid, Metric, Text} from "@tremor/react"
 import SideMenu from "./menu/SideMenu"
-import {Provider} from "react-redux"
-import {PersistGate} from "redux-persist/integration/react"
-import {store, persistor} from "./components/store"
-import AppRoutes from "./components/routes"
+import {AuthConsumer, AuthProvider} from "./auth/AuthContext"
+import Login from "./auth/Login"
+import {LogoutButton} from "./auth/Login"
 export default class App extends Component {
 	render() {
 		/*
@@ -18,11 +17,17 @@ export default class App extends Component {
 
 		return (
 			<>
-				<Provider store={store}>
-					<PersistGate loading={null} persistor={persistor}>
-						<AppRoutes />
-					</PersistGate>
-				</Provider>
+				<AuthProvider login={<Login />}>
+					<AuthConsumer>
+						{({auth}) => (
+							<Card>
+								<Metric>{auth.username}</Metric>
+								<Text>{auth.email}</Text>
+								<LogoutButton>Logout</LogoutButton>
+							</Card>
+						)}
+					</AuthConsumer>
+				</AuthProvider>
 			</>
 		)
 	}

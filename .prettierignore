@@ -3,4 +3,5 @@ docs
 src/sensor
 src/db
 src/broker
+src/frontend/build
 node_modules
