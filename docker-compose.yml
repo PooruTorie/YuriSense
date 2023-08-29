@@ -3,16 +3,20 @@ services:
    frontend:
       build: src/frontend
       depends_on:
-         - db
-         - broker
+         db:
+            condition: service_started
+         broker:
+            condition: service_started
       ports:
          - "80:3000"
    backend:
       build: src/backend
       network_mode: host
       depends_on:
-         - db
-         - broker
+         db:
+            condition: service_started
+         broker:
+            condition: service_started
       environment:
          - SECRET_KEY=yuriAuthKey
       env_file:
@@ -38,7 +42,8 @@ services:
    explorer:
       image: smeagolworms4/mqtt-explorer
       depends_on:
-         - broker
+         broker:
+            condition: service_started
       ports:
          - "127.0.0.1:4000:4000"
       volumes:

@@ -12,7 +12,7 @@ import MqttDataWorker from "../mqtt/mqtt_dataworker"
 import UpdatesRouter from "./routes/updates"
 import UserRouter from "./routes/user"
 
-export default class TempiAPI {
+export default class YurisenseAPI {
 	public database: DataBase
 	public mqtt: MqttDataWorker
 	private app: Express

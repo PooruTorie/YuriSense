@@ -13,15 +13,15 @@ export default class MqttClient extends EventEmitter {
 		this.setMaxListeners(50)
 		this.connection = mqtt.connect(host, {
 			port: 1883,
-			clientId: "tempi-backend"
+			clientId: "yurisense-backend"
 		})
 		this.connection.on("error", (error) => {
 			Logger.fatal("Can't connect" + error)
 		})
 		this.connection.on("connect", () => {
-			this.connection.subscribe("tempi/device")
+			this.connection.subscribe("yurisense/device")
 			this.connection.on("message", (topic, message) => {
-				if (topic === "tempi/device") {
+				if (topic === "yurisense/device") {
 					this.registerNewSensor(JSON.parse(message.toString()))
 					return
 				}
@@ -69,7 +69,7 @@ export class Sensor extends EventEmitter {
 		super()
 		this.setMaxListeners(50)
 		this.connection = connection
-		this._topic = "tempi/sensor/" + uuid
+		this._topic = "yurisense/sensor/" + uuid
 		this._uuid = uuid
 		this._ip = ip
 
@@ -111,16 +111,23 @@ export class Sensor extends EventEmitter {
 		return this._uuid
 	}
 
-	get topic(): string {
-		return this._topic
-	}
-
 	get firmwareVersion(): string {
 		return this._version
 	}
 
 	toString() {
-		return "Sensor {" + "ip: " + this._ip + ", uuid: " + this._uuid + ", topic: " + this._topic + "}"
+		return (
+			"Sensor {" +
+			"ip: " +
+			this._ip +
+			", uuid: " +
+			this._uuid +
+			", type: " +
+			this._type +
+			", version: " +
+			this._version +
+			"}"
+		)
 	}
 
 	alive(ip: string) {
@@ -147,14 +154,24 @@ export class Sensor extends EventEmitter {
 
 	private async requestConfiguration() {
 		const res = await axios.get("http://" + this._ip + "/")
-		this._version = res.data.version
-		this._type = res.data.type
-		Logger.debug("Request Configuration", this.toString())
+		if (res.status == 200) {
+			if (res.data.version) {
+				this._version = res.data.version
+			}
+			if (res.data.type) {
+				this._type = res.data.type
+			}
+			Logger.debug("Request Configuration", this.toString())
+		}
 	}
 
 	private async requestSettings() {
 		const res = await axios.get("http://" + this._ip + "/settings")
-		this.settings = res.data
-		Logger.debug("Request Settings", this.settings)
+		if (res.status == 200) {
+			if (res.data) {
+				this.settings = res.data
+			}
+			Logger.debug("Request Settings", this.settings)
+		}
 	}
 }

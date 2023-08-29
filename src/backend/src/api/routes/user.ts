@@ -1,8 +1,8 @@
 import {Router} from "express"
-import TempiAPI from "../tempi_api"
-import * as fs from "fs"
 import AuthMiddleware from "../../middleware/auth"
 const argon2 = require("argon2")
+import YurisenseAPI from "../yurisense_api"
+
 
 export default class UserRouter {
 	static route: string = "/user"
@@ -10,7 +10,7 @@ export default class UserRouter {
 	private readonly router: Router
 	private readonly auth: AuthMiddleware
 
-	constructor(api: TempiAPI) {
+	constructor(api: YurisenseAPI) {
 		this.router = Router()
 		this.auth = new AuthMiddleware()
 		this.router.post("/signup", async (req, res) => {

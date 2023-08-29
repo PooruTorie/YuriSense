@@ -12,6 +12,7 @@ export default class MainContentPanel extends RealtimeComponent {
 	}
 
 	componentDidMount() {
+		super.componentDidMount()
 		getSensors().then((sensors) => this.setState({sensors}))
 	}
 
