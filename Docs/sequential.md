@@ -23,5 +23,33 @@ sequenceDiagram
 
 # Login Process
 ```mermaid
-
+sequenceDiagram
+    actor User as Yuri:Nutzer
+    participant Frontend as Frontend1:Frontend
+    participant Backend as Backend1:Backend
+    participant Datenbank as DB1:Database
+    activate User
+    User->>+Frontend: Sende Email + Passwort combo
+    Frontend->>+Backend: Sende Email + Passwort combo
+    Backend->>+Datenbank: Finde Nutzer mit gegebener Email
+    alt Nutzer gefunden:
+        Datenbank--)-Backend: Rückgabe der Nutzerdaten
+        alt Nutzereingabe valide
+            Backend--)-Frontend: HTTP 200 inkl. JWT
+            Frontend--)-User: Eingeloggt
+        else Nutzereingabe nicht valide
+            activate Backend
+            activate Frontend
+            Backend--)-Frontend: HTTP 401
+            Frontend--)-User: Nicht Eingeloggt
+        end
+    else Nutzer nicht gefunden
+        activate Datenbank
+        activate Backend
+        activate Frontend
+        Datenbank--)-Backend: Kein Rückgabewert
+        Backend--)-Frontend: HTTP 401
+        Frontend--)-User: Nicht Eingeloggt
+    end
+    deactivate User
 ```
