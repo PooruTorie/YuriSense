@@ -103,4 +103,8 @@ export default class UserRouter {
 			}
 		})
 	}
+
+   get(){
+      return this.router
+   }
 }
