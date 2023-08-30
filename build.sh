@@ -21,7 +21,7 @@ npm i
 npm run build || wait_exit
 cd ../..
 
-docker-compose build || wait_exit
+docker compose build || wait_exit
 
 echo "Build Complete"
 wait_exit

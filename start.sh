@@ -2,6 +2,6 @@
 
 net stop winnat
 
-docker-compose up
+docker compose up
 
 net start winnat
