@@ -22,7 +22,6 @@ services:
       env_file:
          - "src/backend/.env"
    db:
-      image: mysql
       build: src/db
       environment:
          - MYSQL_ROOT_PASSWORD=secret
