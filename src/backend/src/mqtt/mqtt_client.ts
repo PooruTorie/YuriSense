@@ -21,6 +21,7 @@ export default class MqttClient extends EventEmitter {
 		this.connection.on("connect", () => {
 			this.connection.subscribe("yurisense/device")
 			this.connection.on("message", (topic, message) => {
+				Logger.debug("MQTT Message", topic, message)
 				if (topic === "yurisense/device") {
 					this.registerNewSensor(JSON.parse(message.toString()))
 					return

@@ -16,7 +16,7 @@ if (AddressExtractor.extract()) {
 	})
 
 	const mqtt = new MqttClient("mqtt://127.0.0.1")
-	const database = new DataBase("mysql://root@127.0.0.1", "secret")
+	const database = new DataBase("mysql://yuri@127.0.0.1", "yurisense")
 	const dataWorker = new MqttDataWorker(mqtt, database)
 	const api = new YurisenseAPI(3000, database, dataWorker, 12666)
 	api.serve()
