@@ -85,8 +85,7 @@ export class Sensor extends EventEmitter {
 				}
 			}
 		})
-		this.requestConfiguration().then(() => initCallback())
-		this.requestSettings()
+		Promise.all([this.requestConfiguration(), this.requestSettings()]).then(() => initCallback())
 
 		this._aliveInterval = setInterval(() => {
 			if (this._alive < 0) {

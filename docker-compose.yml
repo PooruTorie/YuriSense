@@ -14,6 +14,8 @@ services:
    backend:
       build: src/backend
       network_mode: host
+      volumes:
+         - "./src/backend/updates:/app/updates:ro"
       depends_on:
          db:
             condition: service_started
