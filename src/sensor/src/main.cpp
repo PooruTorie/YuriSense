@@ -76,7 +76,7 @@ void setup() {
 
     discovery.setup();
 
-    RemoteUpdater::setup((String("Tempi ") + CONFIG_DEVICE_TYPE_NAME).c_str());
+    RemoteUpdater::setup((String("YuriSense ") + CONFIG_DEVICE_TYPE_NAME).c_str());
 
     api.get("/broker", setBroker);
     api.get("/settings", setSettings);

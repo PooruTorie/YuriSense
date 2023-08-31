@@ -13,6 +13,8 @@ public:
     static void connect(const char *ssid, const char *password);
 
     static void handle();
+
+    static void listNetworks();
 };
 
 

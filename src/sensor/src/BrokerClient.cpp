@@ -39,9 +39,9 @@ void BrokerClient::registerDeviceMessage() {
 
     String json;
     serializeJson(configJSON, json);
-    client->publish("tempi/device", json);
+    client->publish("yurisense/device", json);
 }
 
 void BrokerClient::publishToSensorTopic(const String &varName, const String &value) {
-    client->publish("tempi/sensor/" + API::uuid + "/" + varName, value);
+    client->publish("yurisense/sensor/" + API::uuid + "/" + varName, value);
 }

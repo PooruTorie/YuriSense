@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version_str": "1.0.0",
   "mqtt_port": 1883,
   "discover_port": 12666,
   "keep_alive_delay": 3000,
@@ -9,9 +9,9 @@
   },
   "device_type": 1,
   "debug_data": false,
-  "ssid": "nice_wlan",
-  "password": "devel",
+  "ssid_str": "nice_wlan",
+  "password_str": "devel",
   "ota": false,
   "ota_ip": "127.0.0.1",
-  "ota_password": "admin"
+  "ota_password_str": "admin"
 }
