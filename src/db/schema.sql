@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `yurisense`.`SensorData` (
   `value` BLOB NULL,
   `label` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`sensor`, `timestamp`),
-  INDEX `fk_SensorData_KnownSensor_idx` (`sensor` ASC) VISIBLE,
+  INDEX `fk_SensorData_KnownSensor_idx` (`sensor` ASC),
   CONSTRAINT `fk_SensorData_KnownSensor`
     FOREIGN KEY (`sensor`)
     REFERENCES `yurisense`.`Sensor` (`uuid`)
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS `yurisense`.`User` (
   `lastName` VARCHAR(50) NOT NULL,
   `phone` VARCHAR(50) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE)
+  UNIQUE INDEX `email_UNIQUE` (`email` ASC))
 ENGINE = InnoDB;
 
 

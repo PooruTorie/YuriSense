@@ -8,13 +8,13 @@ import Login from "./auth/Login"
 import {LogoutButton} from "./auth/Login"
 export default class App extends Component {
 	render() {
+		return (
+			<>
+				<TopBar />
+				<MainContentPanel />
+			</>
+		)
 		/*
-        return <>
-            <TopBar/>
-            <MainContentPanel/>
-        </>
-        */
-
 		return (
 			<>
 				<AuthProvider login={<Login />}>
@@ -30,5 +30,6 @@ export default class App extends Component {
 				</AuthProvider>
 			</>
 		)
+		 */
 	}
 }
