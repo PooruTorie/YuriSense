@@ -16,4 +16,8 @@ app.use(
 	})
 )
 
+app.get("*", (req, res) => {
+	res.send("build/index.html")
+})
+
 app.listen(3000)
