@@ -17,7 +17,7 @@ app.use(
 )
 
 app.get("*", (req, res) => {
-	res.send("build/index.html")
+	res.sendFile("index.html", {root: "build"})
 })
 
 app.listen(3000)
