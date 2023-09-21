@@ -58,6 +58,7 @@ export default class Login extends Component {
 					</Callout>
 				)}
 				<TextInput
+					placeholder={"Email"}
 					name={"email"}
 					value={this.state.email}
 					error={!!this.state.emailError}
@@ -66,6 +67,7 @@ export default class Login extends Component {
 					disabled={this.state.loading}
 				/>
 				<TextInput
+					placeholder={"Password"}
 					name={"password"}
 					value={this.state.password}
 					error={!!this.state.passwordError}

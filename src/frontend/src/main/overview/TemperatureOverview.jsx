@@ -1,9 +1,7 @@
-import {Card, Col, Grid, LineChart, Metric, Tab, TabList, Title} from "@tremor/react"
-import {addHours, subDays, subHours, subMinutes} from "date-fns"
-import SensorSettings from "./SensorSettings"
+import {Card, LineChart, Metric, Tab, TabList, Title} from "@tremor/react"
+import {subDays, subHours, subMinutes} from "date-fns"
 import {getSensorDataTimeline} from "../../api/api"
 import RealtimeComponent from "../../utils/RealtimeComponent"
-import {remap} from "../../utils/MathUtils"
 
 export default class TemperatureOverview extends RealtimeComponent {
 	constructor(props) {
@@ -56,42 +54,36 @@ export default class TemperatureOverview extends RealtimeComponent {
 					break
 			}
 			if (periodStartDate) {
-				return this.state.chartData.filter(
+				let data = this.state.chartData.filter(
 					(item) => item.timestamp >= periodStartDate && item.timestamp <= lastAvailableDate
 				)
+				let multiDay = false,
+					lastDay
+				for (const item of data) {
+					if (lastDay) {
+						if (lastDay.timestamp.getDate() !== item.timestamp.getDate()) {
+							multiDay = true
+							break
+						}
+					}
+					lastDay = item
+				}
+				return [data, multiDay]
 			} else {
-				return this.state.chartData
+				return [this.state.chartData, true]
 			}
 		}
-		return []
+		return [[], false]
 	}
 
 	render() {
-		let filteredData = this.getFilteredData(this.state.filter)
-		let lastValue
-		filteredData = filteredData.reduce((data, value) => {
-			if (lastValue) {
-				const lastValueTime = lastValue.timestamp.getTime() / 60000
-				const valueTime = value.timestamp.getTime() / 60000
-				for (let i = lastValueTime + 1; i <= valueTime; i++) {
-					const x = remap(i, lastValueTime, valueTime, 0, 1)
-					const y = (Math.cos(Math.PI * x) + 1) / 2
-					data.push({
-						Time: new Date(i * 60000).toLocaleTimeString(),
-						Temperature: remap(y, 1, 0, lastValue.value, value.value)
-					})
-				}
-			} else {
-				data.push({
-					Time: value.timestamp.toLocaleTimeString(),
-					Temperature: value.value
-				})
+		let [filteredData, multiDay] = this.getFilteredData(this.state.filter)
+		filteredData = filteredData.map((item) => {
+			return {
+				Time: multiDay ? item.timestamp.toLocaleString() : item.timestamp.toLocaleTimeString(),
+				Temperature: item.value
 			}
-			lastValue = value
-			return data
-		}, [])
-
-		console.log(filteredData)
+		})
 		return (
 			<Card>
 				<Title>

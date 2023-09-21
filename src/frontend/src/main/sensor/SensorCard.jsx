@@ -3,6 +3,7 @@ import {getSensorData} from "../../api/api"
 import {CogIcon} from "@heroicons/react/solid"
 import {remap} from "../../utils/MathUtils"
 import RealtimeComponent from "../../utils/RealtimeComponent"
+import {Link} from "react-router-dom"
 
 export default class SensorCard extends RealtimeComponent {
 	constructor(props) {
@@ -22,26 +23,15 @@ export default class SensorCard extends RealtimeComponent {
 		})
 	}
 
-	dataFormatter(number: number) {
-		return `${Intl.NumberFormat("de")
-			.format((number / 2000) * 100)
-			.toString()} %`
-	}
-
 	render() {
 		return (
 			<Col>
 				<Card className="max-w-lg">
 					<Flex className="text-center">
 						<Text className="w-full">{this.props.sensor.name}</Text>
-						<Button
-							icon={CogIcon}
-							onClick={() => {
-								this.props.doSelect()
-							}}
-						>
-							Overview
-						</Button>
+						<Link to={"sensor/" + this.props.sensor.uuid}>
+							<Button icon={CogIcon}>Overview</Button>
+						</Link>
 					</Flex>
 					<Flex justifyContent="start" alignItems="baseline" className="space-x-1">
 						<Metric>{this.state.data.temp}</Metric>

@@ -9,7 +9,10 @@ curl -X POST \
     "username": "test",
     "email": "test@yurisen.se",
     "password": "test",
-    "admin": true
+    "admin": true,
+    "firstName": "Yuri",
+    "lastName": "Meier",
+    "phone": "1234567"
   }' \
   http://127.0.0.1:3000/api/user/signup
   ```
