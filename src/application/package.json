@@ -3,10 +3,6 @@
 	"version": "0.1.0",
 	"main": "src/electron.js",
 	"homepage": ".",
-	"dependencies": {
-		"electron": "^26.1.0",
-		"electron-builder": "^24.6.3"
-	},
 	"scripts": {
 		"pack": "npm run clean && npx electron-builder --dir",
 		"dist": "npm run clean && npx electron-builder",
@@ -14,6 +10,12 @@
 		"electron": "set NODE_OPTIONS=& npx electron ."
 	},
 	"devDependencies": {
-		"rimraf": "^5.0.1"
+		"rimraf": "^5.0.1",
+		"electron": "^26.1.0",
+		"electron-builder": "^24.6.3"
+	},
+	"build": {
+		"appId": "se.yurisen.admin_tool",
+		"icon": "src/icon.png"
 	}
 }
