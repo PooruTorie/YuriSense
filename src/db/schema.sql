@@ -14,6 +14,8 @@ CREATE TABLE IF NOT EXISTS `yurisense`.`Sensor` (
   `connected` VARCHAR(20) NULL,
   `version` VARCHAR(20) NULL,
   `type` VARCHAR(45) NULL,
+  `manufacture` VARCHAR(45) NULL,
+  `rack` INT NULL,
   PRIMARY KEY (`uuid`))
 ENGINE = InnoDB;
 
@@ -58,3 +60,37 @@ ENGINE = InnoDB;
 CREATE USER 'yuri'@'%' IDENTIFIED BY 'yurisense';
 GRANT ALL ON `yurisense`.* TO 'yuri'@'%' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
+
+-- -----------------------------------------------------
+-- Table `yurisense`.`Rack`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `yurisense`.`Rack` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NOT NULL,
+  `maximalTemperature` FLOAT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `yurisense`.`Log`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `yurisense`.`Log` (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+    `rack` INT NOT NULL,
+    `user` INT NOT NULL,
+    `oldTemperature` VARCHAR(45) NULL,
+    PRIMARY KEY (`id`),
+    INDEX `fk_Log_Rack1_idx` (`rack` ASC),
+    INDEX `fk_Log_User1_idx` (`user` ASC),
+    CONSTRAINT `fk_Log_Rack1`
+     FOREIGN KEY (`rack`)
+         REFERENCES `yurisense`.`Rack` (`id`)
+         ON DELETE CASCADE
+         ON UPDATE CASCADE,
+    CONSTRAINT `fk_Log_User1`
+     FOREIGN KEY (`user`)
+         REFERENCES `yurisense`.`User` (`id`)
+         ON DELETE SET NULL
+         ON UPDATE CASCADE)
+ENGINE = InnoDB;
