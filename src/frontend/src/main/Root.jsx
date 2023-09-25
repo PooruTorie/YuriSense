@@ -1,9 +1,6 @@
-import {Col, Grid, Metric, Text} from "@tremor/react"
+import {Col} from "@tremor/react"
 import NewSensorManager from "./NewSensorManager"
-import SensorCard from "./sensor/SensorCard"
-import {getSensors} from "../api/api"
-import RealtimeComponent from "../utils/RealtimeComponent"
-import {Outlet, useLoaderData} from "react-router-dom"
+import {Outlet} from "react-router-dom"
 import {withLoader} from "../App"
 import {Component} from "react"
 

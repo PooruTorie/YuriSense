@@ -1,5 +1,5 @@
 import {Button, Card, CategoryBar, Col, Flex, Metric, Text} from "@tremor/react"
-import {getSensorData} from "../../api/api"
+import {getSensorData} from "../../api/sensor_api"
 import {CogIcon} from "@heroicons/react/solid"
 import {remap} from "../../utils/MathUtils"
 import RealtimeComponent from "../../utils/RealtimeComponent"

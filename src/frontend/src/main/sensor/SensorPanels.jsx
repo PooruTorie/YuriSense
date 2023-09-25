@@ -1,9 +1,8 @@
-import {Component} from "react"
 import {Grid, Metric, Text} from "@tremor/react"
 import SensorCard from "./SensorCard"
 import RealtimeComponent from "../../utils/RealtimeComponent"
 import {withLoader} from "../../App"
-import {getSensors} from "../../api/api"
+import {getSensors} from "../../api/sensor_api"
 
 class SensorPanels extends RealtimeComponent {
 	constructor(props) {

@@ -2,7 +2,7 @@ import {Component} from "react"
 import {Button, Flex} from "@tremor/react"
 import {XIcon} from "@heroicons/react/solid"
 import TemperatureOverview from "./TemperatureOverview"
-import {getSensors} from "../../api/api"
+import {getSensors} from "../../api/sensor_api"
 import {withLoader} from "../../App"
 import {Link, redirect} from "react-router-dom"
 

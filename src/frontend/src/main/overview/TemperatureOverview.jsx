@@ -1,6 +1,6 @@
 import {Card, LineChart, Metric, Tab, TabList, Title} from "@tremor/react"
 import {subDays, subHours, subMinutes} from "date-fns"
-import {getSensorDataTimeline} from "../../api/api"
+import {getSensorDataTimeline} from "../../api/sensor_api"
 import RealtimeComponent from "../../utils/RealtimeComponent"
 
 export default class TemperatureOverview extends RealtimeComponent {

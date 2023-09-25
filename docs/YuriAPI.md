@@ -6,10 +6,8 @@
 curl -X POST \
   -H "Content-Type: application/json" \
   -d '{
-    "username": "test",
     "email": "test@yurisen.se",
     "password": "test",
-    "admin": true,
     "firstName": "Yuri",
     "lastName": "Meier",
     "phone": "1234567"

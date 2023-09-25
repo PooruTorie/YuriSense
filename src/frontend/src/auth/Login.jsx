@@ -1,8 +1,9 @@
 import {Component} from "react"
-import {TextInput, Card, Button, Callout} from "@tremor/react"
+import {TextInput, Card, Button, Callout, Subtitle} from "@tremor/react"
 import {ExclamationIcon} from "@heroicons/react/solid"
-import {signIn} from "../api/api"
+import {signIn} from "../api/auth_api"
 import AuthContext from "./AuthContext"
+import {Link} from "react-router-dom"
 
 export default class Login extends Component {
 	static contextType = AuthContext
@@ -23,6 +24,9 @@ export default class Login extends Component {
 		let ready = true
 		if (this.state.email === "") {
 			this.setState({emailError: "Email is Empty"})
+			ready = false
+		} else if (!/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(this.state.email)) {
+			this.setState({emailError: "Email is not valide"})
 			ready = false
 		}
 		if (this.state.password === "") {
@@ -51,13 +55,14 @@ export default class Login extends Component {
 
 	render() {
 		return (
-			<Card>
+			<Card className={"h-fit m-40"}>
 				{!!this.state.error && (
 					<Callout title="Login Failed" icon={ExclamationIcon} color="rose">
 						{this.state.error}
 					</Callout>
 				)}
 				<TextInput
+					className={"m-1"}
 					placeholder={"Email"}
 					name={"email"}
 					value={this.state.email}
@@ -67,6 +72,7 @@ export default class Login extends Component {
 					disabled={this.state.loading}
 				/>
 				<TextInput
+					className={"m-1"}
 					placeholder={"Password"}
 					name={"password"}
 					value={this.state.password}
@@ -75,7 +81,10 @@ export default class Login extends Component {
 					onChange={this.update.bind(this)}
 					disabled={this.state.loading}
 				/>
-				<Button loading={this.state.loading} onClick={this.login.bind(this)}>
+				<Link className={"mt-3 text-center"} to={"/admin/signup"}>
+					<Subtitle className={"hover:text-blue-600"}>Create Account</Subtitle>
+				</Link>
+				<Button className={"w-[100%] m-1"} loading={this.state.loading} onClick={this.login.bind(this)}>
 					Login
 				</Button>
 			</Card>

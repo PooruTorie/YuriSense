@@ -5,7 +5,9 @@ import {Logger} from "../utils/logger"
 declare global {
 	class UserData {
 		userId: number
-		username: string
+		firstName: string
+		lastName: string
+		phone: string
 		email: string
 		admin: boolean
 	}

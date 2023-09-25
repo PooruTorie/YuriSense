@@ -1,6 +1,6 @@
 import {Badge, Button, Callout, Card, ProgressBar, Text, TextInput, Title} from "@tremor/react"
 import {ArrowCircleUpIcon} from "@heroicons/react/solid"
-import {getNewestVersion, setSensorName, updateSensor} from "../../api/api"
+import {getNewestVersion, setSensorName, updateSensor} from "../../api/sensor_api"
 import RealtimeComponent from "../../utils/RealtimeComponent"
 
 export default class SensorSettings extends RealtimeComponent {

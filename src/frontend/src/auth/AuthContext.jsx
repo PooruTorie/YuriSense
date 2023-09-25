@@ -1,6 +1,6 @@
 import React, {Component} from "react"
 import jwt_decode from "jwt-decode"
-import {signOut} from "../api/api"
+import {signOut} from "../api/auth_api"
 
 const AuthContext = React.createContext()
 

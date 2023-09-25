@@ -132,7 +132,6 @@ export default class DataBase {
 	}
 
 	async createUser(
-		username: string,
 		email: string,
 		password: string,
 		admin: boolean,
@@ -143,21 +142,25 @@ export default class DataBase {
 		const hash = await argon2.hash(password)
 		// Assuming this.connection is a valid database connection
 		const result: [ResultSetHeader, FieldPacket[]] = await this.connection.execute(
-			"INSERT INTO User (username, email, password, admin, firstName, lastName, phone) VALUES (:username, :email, :hash, :admin, :firstName, :lastName, :phone)",
-			{username, email, hash, admin, firstName, lastName, phone}
+			"INSERT INTO User (email, password, admin, firstName, lastName, phone) VALUES (:email, :hash, :admin, :firstName, :lastName, :phone)",
+			{email, hash, admin, firstName, lastName, phone}
 		)
 		return result[0].insertId
 	}
 
 	async getUserByEmail(email: string) {
-		const [rows, fields] = await this.connection.query<RowDataPacket[]>(
-			"SELECT id, username, password, admin FROM User WHERE email = :email",
-			{email}
-		)
+		const [rows, fields] = await this.connection.query<RowDataPacket[]>("SELECT * FROM User WHERE email = :email", {
+			email
+		})
 		if (rows.length == 0) {
 			return null
 		}
 
 		return rows[0]
+	}
+
+	async isFirstUser() {
+		const [rows, fields] = await this.connection.query<RowDataPacket[]>("SELECT id FROM User")
+		return rows.length == 0
 	}
 }

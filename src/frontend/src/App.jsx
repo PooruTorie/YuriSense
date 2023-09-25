@@ -10,6 +10,7 @@ import OverviewContentPanel from "./main/overview/SensorOverviewPanel"
 import {loader as SensorPanelLoader} from "./main/sensor/SensorPanels"
 import {loader as SensorLoader} from "./main/overview/SensorOverviewPanel"
 import SensorPanels from "./main/sensor/SensorPanels"
+import Signup from "./auth/Signup"
 
 export function withLoader(Component) {
 	return (props) => <Component {...props} navigate={useNavigate()} params={useParams()} loaderData={useLoaderData()} />
@@ -47,7 +48,9 @@ export default class App extends Component {
 							<AuthConsumer>
 								{({auth}) => (
 									<Card>
-										<Metric>{auth.username}</Metric>
+										<Metric>
+											{auth.firstName} {auth.lastName}
+										</Metric>
 										<Text>{auth.email}</Text>
 										<LogoutButton>Logout</LogoutButton>
 									</Card>
@@ -56,6 +59,10 @@ export default class App extends Component {
 						</AuthProvider>
 					</>
 				)
+			},
+			{
+				path: "/admin/signup",
+				element: <Signup />
 			}
 		])
 

@@ -1,6 +1,5 @@
 import {Router} from "express"
-import AuthMiddleware from "../../middleware/auth"
-const argon2 = require("argon2")
+import * as argon2 from "argon2"
 import YurisenseAPI from "../yurisense_api"
 
 export default class UserRouter {
@@ -10,8 +9,8 @@ export default class UserRouter {
 	constructor(api: YurisenseAPI) {
 		this.router = Router()
 		this.router.post("/signup", async (req, res) => {
-			const {username, email, password, admin, firstName, lastName, phone} = req.body
-			if (!username || !password || !email || !admin || !firstName || !lastName || !phone) {
+			const {email, password, firstName, lastName, phone} = req.body
+			if (!password || !email || !firstName || !lastName || !phone) {
 				res.json({error: "Not all parameter fulfilled."})
 				return
 			}
@@ -30,8 +29,10 @@ export default class UserRouter {
 				})
 			}
 
+			let admin = await api.database.isFirstUser()
+
 			await api.database
-				.createUser(username, email, password, admin, firstName, lastName, phone)
+				.createUser(email, password, admin, firstName, lastName, phone)
 				.then((id) => {
 					res.json({message: "User created", userId: id})
 				})
@@ -57,7 +58,9 @@ export default class UserRouter {
 			}
 			const userData = {
 				userId: user?.id,
-				username: user?.username,
+				firstName: user?.firstName,
+				lastName: user?.lastName,
+				phone: user?.phone,
 				email: email,
 				admin: user?.admin
 			}
@@ -74,7 +77,7 @@ export default class UserRouter {
 			if (req.user) {
 				api.auth.revokeToken(req.user)
 				return res.json({
-					message: `Token from ${req.user.username} has been revoked`
+					message: `Token from ${req.user.email} has been revoked`
 				})
 			} else {
 				return res.json({error: "Invalid token"})

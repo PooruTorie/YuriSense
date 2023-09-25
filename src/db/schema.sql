@@ -43,7 +43,6 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `yurisense`.`User` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `username` VARCHAR(50) NOT NULL,
   `email` VARCHAR(100) NOT NULL,
   `password` CHAR(97) NOT NULL,
   `admin` TINYINT NOT NULL DEFAULT 0,
@@ -79,7 +78,7 @@ CREATE TABLE IF NOT EXISTS `yurisense`.`Log` (
     `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
     `rack` INT NOT NULL,
     `user` INT NOT NULL,
-    `oldTemperature` VARCHAR(45) NULL,
+    `oldTemperature` FLOAT NULL,
     PRIMARY KEY (`id`),
     INDEX `fk_Log_Rack1_idx` (`rack` ASC),
     INDEX `fk_Log_User1_idx` (`user` ASC),

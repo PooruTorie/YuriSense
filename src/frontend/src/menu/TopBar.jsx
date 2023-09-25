@@ -2,7 +2,7 @@ import {Component} from "react"
 import {Button, Card, Col, Grid} from "@tremor/react"
 import {SearchIcon} from "@heroicons/react/solid"
 import logo from "../assets/logo.svg"
-import {discover} from "../api/api"
+import {discover} from "../api/sensor_api"
 
 export default class TopBar extends Component {
 	constructor(props) {
