@@ -1,19 +1,28 @@
 import {Component} from "react"
-import TopBar from "./menu/TopBar"
-import MainContentPanel from "./main/Root"
-import {Card, Metric, Text} from "@tremor/react"
-import {AuthConsumer, AuthProvider} from "./auth/AuthContext"
-import Login from "./auth/Login"
-import {LogoutButton} from "./auth/Login"
-import {createBrowserRouter, RouterProvider, useLoaderData, useParams, useNavigate} from "react-router-dom"
+import MainContentPanel from "./main/MainContentPanel"
+import {createBrowserRouter, RouterProvider, useLoaderData, useParams, useNavigate, useLocation} from "react-router-dom"
 import OverviewContentPanel from "./main/overview/SensorOverviewPanel"
 import {loader as SensorPanelLoader} from "./main/sensor/SensorPanels"
 import {loader as SensorLoader} from "./main/overview/SensorOverviewPanel"
 import SensorPanels from "./main/sensor/SensorPanels"
 import Signup from "./auth/Signup"
+import AdminPanel from "./admin/AdminPanel"
+import Login from "./auth/Login"
+import {AuthProvider} from "./auth/AuthContext"
+import RackManager from "./admin/manager/RackManager"
+import SensorManager from "./admin/manager/SensorManager"
+import UserManager from "./admin/manager/UserManager"
 
 export function withLoader(Component) {
-	return (props) => <Component {...props} navigate={useNavigate()} params={useParams()} loaderData={useLoaderData()} />
+	return (props) => (
+		<Component
+			{...props}
+			navigate={useNavigate()}
+			location={useLocation()}
+			params={useParams()}
+			loaderData={useLoaderData()}
+		/>
+	)
 }
 
 export default class App extends Component {
@@ -21,12 +30,7 @@ export default class App extends Component {
 		let router = createBrowserRouter([
 			{
 				path: "/",
-				element: (
-					<>
-						<TopBar />
-						<MainContentPanel />
-					</>
-				),
+				element: <MainContentPanel />,
 				children: [
 					{
 						index: true,
@@ -43,22 +47,24 @@ export default class App extends Component {
 			{
 				path: "/admin",
 				element: (
-					<>
-						<AuthProvider login={<Login />}>
-							<AuthConsumer>
-								{({auth}) => (
-									<Card>
-										<Metric>
-											{auth.firstName} {auth.lastName}
-										</Metric>
-										<Text>{auth.email}</Text>
-										<LogoutButton>Logout</LogoutButton>
-									</Card>
-								)}
-							</AuthConsumer>
-						</AuthProvider>
-					</>
-				)
+					<AuthProvider login={<Login />}>
+						<AdminPanel />
+					</AuthProvider>
+				),
+				children: [
+					{
+						path: "racks",
+						element: <RackManager />
+					},
+					{
+						path: "sensors",
+						element: <SensorManager />
+					},
+					{
+						path: "users",
+						element: <UserManager />
+					}
+				]
 			},
 			{
 				path: "/admin/signup",

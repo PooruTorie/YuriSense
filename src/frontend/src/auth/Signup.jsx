@@ -6,8 +6,9 @@ import {LoadCanvasTemplateNoReload, loadCaptchaEnginge, validateCaptcha} from "r
 import PasswordStrengthBar from "react-password-strength-bar"
 import {Link} from "react-router-dom"
 import apiErrors from "../api/errors"
+import {withLoader} from "../App"
 
-export default class Signup extends Component {
+class Signup extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
@@ -65,7 +66,7 @@ export default class Signup extends Component {
 		} else if (this.state.password.length < 8) {
 			this.setState({passwordError: "Password is to short"})
 			ready = false
-		} else if (this.state.passwordScore < 3) {
+		} else if (this.state.passwordScore < 2) {
 			this.setState({passwordError: "Password is to weak"})
 			ready = false
 		} else if (this.state.password !== this.state.repeatPassword) {
@@ -92,6 +93,7 @@ export default class Signup extends Component {
 				this.setState({loading: false, error: apiErrors[result.error]})
 			} else {
 				console.log(result)
+				this.props.navigate("/admin")
 			}
 		}
 	}
@@ -107,104 +109,109 @@ export default class Signup extends Component {
 
 	render() {
 		return (
-			<Card className={"h-fit m-32"}>
-				{!!this.state.error && (
-					<Callout title="Signup Failed" icon={ExclamationIcon} color="rose">
-						{this.state.error}
-					</Callout>
-				)}
-				<TextInput
-					className={"mt-1 mb-1"}
-					placeholder={"First Name"}
-					name={"firstName"}
-					maxLength={50}
-					value={this.state.firstName}
-					error={!!this.state.firstNameError}
-					errorMessage={this.state.firstNameError}
-					onChange={this.update.bind(this)}
-					disabled={this.state.loading}
-				/>
-				<TextInput
-					className={"mt-1 mb-1"}
-					placeholder={"Last Name"}
-					name={"lastName"}
-					maxLength={50}
-					value={this.state.lastName}
-					error={!!this.state.lastNameError}
-					errorMessage={this.state.lastNameError}
-					onChange={this.update.bind(this)}
-					disabled={this.state.loading}
-				/>
-				<TextInput
-					className={"mt-1 mb-1"}
-					placeholder={"Email"}
-					name={"email"}
-					maxLength={100}
-					value={this.state.email}
-					error={!!this.state.emailError}
-					errorMessage={this.state.emailError}
-					onChange={this.update.bind(this)}
-					disabled={this.state.loading}
-				/>
-				<TextInput
-					className={"mt-1 mb-1"}
-					placeholder={"Phone"}
-					name={"phone"}
-					maxLength={50}
-					value={this.state.phone}
-					error={!!this.state.phoneError}
-					errorMessage={this.state.phoneError}
-					onChange={this.update.bind(this)}
-					disabled={this.state.loading}
-				/>
-				<TextInput
-					className={"mt-1 mb-1"}
-					placeholder={"Password"}
-					name={"password"}
-					type={"password"}
-					value={this.state.password}
-					error={!!this.state.passwordError}
-					errorMessage={this.state.passwordError}
-					onChange={this.update.bind(this)}
-					disabled={this.state.loading}
-				/>
-				<PasswordStrengthBar
-					onChangeScore={(passwordScore) => this.setState({passwordScore})}
-					minLength={8}
-					password={this.state.password}
-				/>
-				<TextInput
-					className={"mt-1 mb-1"}
-					placeholder={"Repeat Password"}
-					name={"repeatPassword"}
-					type={"password"}
-					value={this.state.repeatPassword}
-					error={!!this.state.repeatPasswordError}
-					errorMessage={this.state.repeatPasswordError}
-					onChange={this.update.bind(this)}
-					disabled={this.state.loading}
-				/>
-				<div className={"mt-3"}>
-					<LoadCanvasTemplateNoReload />
+			<div className={"flex"}>
+				<Card className={"h-fit m-3"}>
+					{!!this.state.error && (
+						<Callout title="Signup Failed" icon={ExclamationIcon} color="rose">
+							{this.state.error}
+						</Callout>
+					)}
 					<TextInput
 						className={"mt-1 mb-1"}
-						placeholder={"Captcha Value"}
-						name={"captcha"}
-						maxLength={6}
-						value={this.state.captcha}
-						error={!!this.state.captchaError}
-						errorMessage={this.state.captchaError}
+						placeholder={"First Name"}
+						name={"firstName"}
+						maxLength={50}
+						value={this.state.firstName}
+						error={!!this.state.firstNameError}
+						errorMessage={this.state.firstNameError}
 						onChange={this.update.bind(this)}
 						disabled={this.state.loading}
 					/>
-				</div>
-				<Link className={"mt-3 text-center"} to={"/admin"}>
-					<Subtitle className={"hover:text-blue-600"}>Login</Subtitle>
-				</Link>
-				<Button className={"m-1 w-[100%]"} loading={this.state.loading} onClick={this.login.bind(this)}>
-					Register
-				</Button>
-			</Card>
+					<TextInput
+						className={"mt-1 mb-1"}
+						placeholder={"Last Name"}
+						name={"lastName"}
+						maxLength={50}
+						value={this.state.lastName}
+						error={!!this.state.lastNameError}
+						errorMessage={this.state.lastNameError}
+						onChange={this.update.bind(this)}
+						disabled={this.state.loading}
+					/>
+					<TextInput
+						className={"mt-1 mb-1"}
+						placeholder={"Email"}
+						name={"email"}
+						maxLength={100}
+						value={this.state.email}
+						error={!!this.state.emailError}
+						errorMessage={this.state.emailError}
+						onChange={this.update.bind(this)}
+						disabled={this.state.loading}
+					/>
+					<TextInput
+						className={"mt-1 mb-1"}
+						placeholder={"Phone"}
+						name={"phone"}
+						maxLength={50}
+						value={this.state.phone}
+						error={!!this.state.phoneError}
+						errorMessage={this.state.phoneError}
+						onChange={this.update.bind(this)}
+						disabled={this.state.loading}
+					/>
+					<TextInput
+						className={"mt-1 mb-1"}
+						placeholder={"Password"}
+						name={"password"}
+						type={"password"}
+						value={this.state.password}
+						error={!!this.state.passwordError}
+						errorMessage={this.state.passwordError}
+						onChange={this.update.bind(this)}
+						disabled={this.state.loading}
+					/>
+					<PasswordStrengthBar
+						onChangeScore={(passwordScore) => this.setState({passwordScore})}
+						minLength={8}
+						password={this.state.password}
+					/>
+					<TextInput
+						className={"mt-1 mb-1"}
+						placeholder={"Repeat Password"}
+						name={"repeatPassword"}
+						type={"password"}
+						value={this.state.repeatPassword}
+						error={!!this.state.repeatPasswordError}
+						errorMessage={this.state.repeatPasswordError}
+						onChange={this.update.bind(this)}
+						disabled={this.state.loading}
+					/>
+					<div className={"mt-3"}>
+						<LoadCanvasTemplateNoReload />
+						<TextInput
+							className={"mt-1 mb-1"}
+							placeholder={"Captcha Value"}
+							name={"captcha"}
+							maxLength={6}
+							value={this.state.captcha}
+							error={!!this.state.captchaError}
+							errorMessage={this.state.captchaError}
+							onChange={this.update.bind(this)}
+							disabled={this.state.loading}
+						/>
+					</div>
+					<Link className={"mt-3 text-center"} to={"/admin"}>
+						<Subtitle className={"hover:text-blue-600"}>Login</Subtitle>
+					</Link>
+					<Button className={"m-1 w-[100%]"} loading={this.state.loading} onClick={this.login.bind(this)}>
+						Register
+					</Button>
+				</Card>
+			</div>
 		)
 	}
 }
+
+const SignupWithLoader = withLoader(Signup)
+export default SignupWithLoader

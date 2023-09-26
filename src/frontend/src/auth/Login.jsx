@@ -56,39 +56,42 @@ export default class Login extends Component {
 
 	render() {
 		return (
-			<Card className={"h-fit m-40"}>
-				{!!this.state.error && (
-					<Callout title="Login Failed" icon={ExclamationIcon} color="rose">
-						{this.state.error}
-					</Callout>
-				)}
-				<TextInput
-					className={"m-1"}
-					placeholder={"Email"}
-					name={"email"}
-					value={this.state.email}
-					error={!!this.state.emailError}
-					errorMessage={this.state.emailError}
-					onChange={this.update.bind(this)}
-					disabled={this.state.loading}
-				/>
-				<TextInput
-					className={"m-1"}
-					placeholder={"Password"}
-					name={"password"}
-					value={this.state.password}
-					error={!!this.state.passwordError}
-					errorMessage={this.state.passwordError}
-					onChange={this.update.bind(this)}
-					disabled={this.state.loading}
-				/>
-				<Link className={"mt-3 text-center"} to={"/admin/signup"}>
-					<Subtitle className={"hover:text-blue-600"}>Create Account</Subtitle>
-				</Link>
-				<Button className={"w-[100%] m-1"} loading={this.state.loading} onClick={this.login.bind(this)}>
-					Login
-				</Button>
-			</Card>
+			<div className={"flex"}>
+				<Card className={"h-fit m-3"}>
+					{!!this.state.error && (
+						<Callout title="Login Failed" icon={ExclamationIcon} color="rose">
+							{this.state.error}
+						</Callout>
+					)}
+					<TextInput
+						className={"m-1"}
+						placeholder={"Email"}
+						name={"email"}
+						value={this.state.email}
+						error={!!this.state.emailError}
+						errorMessage={this.state.emailError}
+						onChange={this.update.bind(this)}
+						disabled={this.state.loading}
+					/>
+					<TextInput
+						className={"m-1"}
+						placeholder={"Password"}
+						name={"password"}
+						type={"password"}
+						value={this.state.password}
+						error={!!this.state.passwordError}
+						errorMessage={this.state.passwordError}
+						onChange={this.update.bind(this)}
+						disabled={this.state.loading}
+					/>
+					<Link className={"mt-3 text-center"} to={"/admin/signup"}>
+						<Subtitle className={"hover:text-blue-600"}>Create Account</Subtitle>
+					</Link>
+					<Button className={"w-[100%] m-1"} loading={this.state.loading} onClick={this.login.bind(this)}>
+						Login
+					</Button>
+				</Card>
+			</div>
 		)
 	}
 }
@@ -98,7 +101,7 @@ export class LogoutButton extends Component {
 
 	render() {
 		return (
-			<Button {...this.props} onClick={this.context.logout}>
+			<Button {...this.props} onClick={() => this.context.logout(this.props.to)}>
 				{this.props.children}
 			</Button>
 		)

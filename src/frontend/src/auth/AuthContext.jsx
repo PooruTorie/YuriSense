@@ -1,10 +1,20 @@
 import React, {Component} from "react"
 import jwt_decode from "jwt-decode"
 import {signOut} from "../api/auth_api"
+import {Context} from "react"
+import {useNavigate} from "react-router-dom"
+import {withLoader} from "../App"
 
-const AuthContext = React.createContext()
+const AuthContext: Context<{
+	userId: number,
+	firstName: string,
+	lastName: string,
+	phone: string,
+	email: string,
+	admin: boolean
+}> = React.createContext()
 
-export class AuthProvider extends Component {
+class AuthProviderClass extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
@@ -22,10 +32,13 @@ export class AuthProvider extends Component {
 		}
 	}
 
-	async logout() {
+	async logout(to) {
 		await signOut(this.state.token)
 		this.setState({token: undefined, auth: undefined})
 		localStorage.removeItem("auth")
+		if (to) {
+			this.props.navigate(to)
+		}
 	}
 
 	setToken(token) {
@@ -45,6 +58,9 @@ export class AuthProvider extends Component {
 		)
 	}
 }
+
+export const AuthProvider = withLoader(AuthProviderClass)
+
 export const AuthConsumer = AuthContext.Consumer
 
 export default AuthContext

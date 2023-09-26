@@ -30,5 +30,5 @@ body {
 
 #root {
 	height: 100vh;
-	display: flex;
+	width: 100vw;
 }
