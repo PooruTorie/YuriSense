@@ -5,6 +5,7 @@ import {signUp} from "../api/auth_api"
 import {LoadCanvasTemplateNoReload, loadCaptchaEnginge, validateCaptcha} from "react-simple-captcha"
 import PasswordStrengthBar from "react-password-strength-bar"
 import {Link} from "react-router-dom"
+import apiErrors from "../api/errors"
 
 export default class Signup extends Component {
 	constructor(props) {
@@ -88,7 +89,7 @@ export default class Signup extends Component {
 				this.state.phone
 			)
 			if (result.error) {
-				this.setState({loading: false, error: result.error})
+				this.setState({loading: false, error: apiErrors[result.error]})
 			} else {
 				console.log(result)
 			}

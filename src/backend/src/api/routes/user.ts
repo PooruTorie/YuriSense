@@ -11,21 +11,14 @@ export default class UserRouter {
 		this.router.post("/signup", async (req, res) => {
 			const {email, password, firstName, lastName, phone} = req.body
 			if (!password || !email || !firstName || !lastName || !phone) {
-				res.json({error: "Not all parameter fulfilled."})
+				res.json({error: "parameter_missing"})
 				return
-			}
-
-			let emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/
-			if (!emailRegex.test(email)) {
-				res.json({
-					error: "Email address provided is not valid"
-				})
 			}
 
 			const user = await api.database.getUserByEmail(email)
 			if (user) {
 				return res.json({
-					error: "User with this email address already exists"
+					error: "email_duplicate"
 				})
 			}
 
@@ -38,23 +31,23 @@ export default class UserRouter {
 				})
 				.catch((error) => {
 					console.error("Error:", error)
-					res.json({error: "Caught error on user creation"})
+					res.json({error: "internal_error"})
 				})
 		})
 
 		this.router.post("/signin", async (req, res) => {
 			const {email, password} = req.body
 			if (!email || !password) {
-				return res.json({error: "All input is required"})
+				return res.json({error: "parameter_missing"})
 			}
 
 			const user = await api.database.getUserByEmail(email)
 			if (user === null) {
-				return res.json({error: "User not found"})
+				return res.json({error: "user_not_found"})
 			}
 
 			if (!(await argon2.verify(user?.password, password))) {
-				return res.json({error: "Email & password combo was wrong"})
+				return res.json({error: "login_failed"})
 			}
 			const userData = {
 				userId: user?.id,
@@ -66,7 +59,7 @@ export default class UserRouter {
 			}
 			const token = api.auth.createToken(userData, "8h")
 			if (!token) {
-				return res.json({error: "Token Could not be Generated"})
+				return res.json({error: "token_error"})
 			}
 			return res.json({
 				yuriToken: token
@@ -80,7 +73,7 @@ export default class UserRouter {
 					message: `Token from ${req.user.email} has been revoked`
 				})
 			} else {
-				return res.json({error: "Invalid token"})
+				return res.json({error: "token_invalide"})
 			}
 		})
 	}

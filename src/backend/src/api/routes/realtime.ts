@@ -17,7 +17,7 @@ export default class RealtimeRouter {
 				"Cache-Control": "no-cache"
 			})
 
-			function eventSend(label: String, data) {
+			function eventSend(label: String, data: any) {
 				res.write("event:" + label + "\n")
 				if (data instanceof Object) {
 					data = JSON.stringify(data)

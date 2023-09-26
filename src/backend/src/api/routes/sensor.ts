@@ -14,19 +14,19 @@ export default class SensorRouter {
 
 		this.router.put("/known", async (req, res) => {
 			if (!["uuid", "name"].every((val) => Object.keys(req.body).includes(val))) {
-				res.json({error: "Not all parameter fulfilled."})
+				res.json({error: "parameter_missing"})
 				return
 			}
 			if (req.body.name === "") {
-				res.json({error: "The Name can not be blank."})
+				res.json({error: "name_empty"})
 				return
 			}
 			if (req.body.name.length > 20) {
-				res.json({error: "Name is to long max 20 chars."})
+				res.json({error: "name_to_long"})
 				return
 			}
 			if (!(await api.database.checkUUID(req.body.uuid))) {
-				res.json({error: "UUID is not valide."})
+				res.json({error: "uuid_invalide"})
 				return
 			}
 			await api.database.setName(req.body.uuid, req.body.name)

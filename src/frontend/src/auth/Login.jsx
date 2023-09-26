@@ -4,6 +4,7 @@ import {ExclamationIcon} from "@heroicons/react/solid"
 import {signIn} from "../api/auth_api"
 import AuthContext from "./AuthContext"
 import {Link} from "react-router-dom"
+import apiErrors from "../api/errors"
 
 export default class Login extends Component {
 	static contextType = AuthContext
@@ -37,7 +38,7 @@ export default class Login extends Component {
 			this.setState({loading: true})
 			const result = await signIn(this.state.email, this.state.password)
 			if (result.error) {
-				this.setState({loading: false, error: result.error})
+				this.setState({loading: false, error: apiErrors[result.error]})
 			} else {
 				this.context.setToken(result.yuriToken)
 			}

@@ -2,6 +2,7 @@ import {Component} from "react"
 import {Button, Card, Metric, Table, TableBody, TableHead, TableHeaderCell, TableRow, TextInput} from "@tremor/react"
 import {getNewSensorUUIDs, setSensorName} from "../api/sensor_api"
 import RealtimeComponent from "../utils/RealtimeComponent"
+import apiErrors from "../api/errors"
 
 class AddNewSensor extends Component {
 	constructor(props) {
@@ -35,7 +36,7 @@ class AddNewSensor extends Component {
 								this.setState({loading: true})
 								setSensorName(this.props.uuid, this.state.name.trim()).then((res) => {
 									if (res.error) {
-										this.setState({loading: false, error: res.error})
+										this.setState({loading: false, error: apiErrors[res.error]})
 									} else {
 										this.setState({show: false})
 										this.props.onRemove()
