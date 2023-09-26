@@ -8,9 +8,10 @@ function createWindow() {
 		fullscreenable: true
 	})
 
-	// and load the index.html of the app.
-	// win.loadFile("index.html");
-	win.loadURL("http://192.168.1.10/admin")
+	win.setMenu(null)
+
+	//win.loadURL("http://192.168.1.10/admin")
+	win.loadURL("http://localhost/admin")
 	// Open the DevTools.
 	win.webContents.openDevTools({mode: "detach"})
 }
