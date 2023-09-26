@@ -64,7 +64,7 @@ export class Sensor extends EventEmitter {
 	private readonly _uuid: string
 	private _version: string = "x.x.x"
 	private _alive: number = 10
-	private readonly _aliveInterval: NodeJS.Timer
+	private readonly _aliveInterval: ReturnType<typeof setInterval>
 
 	constructor(connection: MqttClient, uuid: string, ip: string, initCallback: Function) {
 		super()

@@ -160,7 +160,7 @@ export default class DataBase {
 	}
 
 	async isFirstUser() {
-		const [rows, fields] = await this.connection.query<RowDataPacket[]>("SELECT id FROM User")
-		return rows.length == 0
+		const [rows, fields] = await this.connection.query<RowDataPacket[]>("SELECT COUNT(*) AS count FROM User")
+		return rows[0]["count"] === 0
 	}
 }

@@ -53,13 +53,6 @@ CREATE TABLE IF NOT EXISTS `yurisense`.`User` (
   UNIQUE INDEX `email_UNIQUE` (`email` ASC))
 ENGINE = InnoDB;
 
--- -------------------------------------------------------
--- Create Yuri user
--- -------------------------------------------------------
-CREATE USER 'yuri'@'%' IDENTIFIED BY 'yurisense';
-GRANT ALL ON `yurisense`.* TO 'yuri'@'%' WITH GRANT OPTION;
-FLUSH PRIVILEGES;
-
 -- -----------------------------------------------------
 -- Table `yurisense`.`Rack`
 -- -----------------------------------------------------
@@ -77,7 +70,7 @@ CREATE TABLE IF NOT EXISTS `yurisense`.`Log` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
     `rack` INT NOT NULL,
-    `user` INT NOT NULL,
+    `user` INT NULL,
     `oldTemperature` FLOAT NULL,
     PRIMARY KEY (`id`),
     INDEX `fk_Log_Rack1_idx` (`rack` ASC),
@@ -93,3 +86,10 @@ CREATE TABLE IF NOT EXISTS `yurisense`.`Log` (
          ON DELETE SET NULL
          ON UPDATE CASCADE)
 ENGINE = InnoDB;
+
+-- -------------------------------------------------------
+-- Create Yuri user
+-- -------------------------------------------------------
+CREATE USER 'yuri'@'%' IDENTIFIED BY 'yurisense';
+GRANT ALL ON `yurisense`.* TO 'yuri'@'%' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
