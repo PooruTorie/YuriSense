@@ -33,12 +33,12 @@ class AuthProviderClass extends Component {
 	}
 
 	async logout(to) {
-		await signOut(this.state.token)
-		this.setState({token: undefined, auth: undefined})
 		localStorage.removeItem("auth")
 		if (to) {
-			this.props.navigate(to)
+			await this.props.navigate(to)
 		}
+		await signOut(this.state.token)
+		this.setState({token: undefined, auth: undefined})
 	}
 
 	setToken(token) {
