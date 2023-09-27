@@ -1,12 +1,10 @@
-import {Component} from "react"
-import MainContentPanel from "./main/MainContentPanel"
+import {Component, lazy} from "react"
 import {createBrowserRouter, RouterProvider, useLoaderData, useParams, useNavigate, useLocation} from "react-router-dom"
 import OverviewContentPanel from "./main/overview/SensorOverviewPanel"
 import {loader as SensorPanelLoader} from "./main/sensor/SensorPanels"
 import {loader as SensorLoader} from "./main/overview/SensorOverviewPanel"
 import SensorPanels from "./main/sensor/SensorPanels"
 import Signup from "./auth/Signup"
-import AdminPanel from "./admin/AdminPanel"
 import Login from "./auth/Login"
 import {AuthProvider} from "./auth/AuthContext"
 import RackManager from "./admin/manager/RackManager"
@@ -24,6 +22,9 @@ export function withLoader(Component) {
 		/>
 	)
 }
+
+const MainContentPanel = lazy(() => import("./main/MainContentPanel"))
+const AdminPanel = lazy(() => import("./admin/AdminPanel"))
 
 export default class App extends Component {
 	render() {

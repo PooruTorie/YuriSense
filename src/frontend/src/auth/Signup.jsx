@@ -1,13 +1,14 @@
-import {Component} from "react"
+import {Component, lazy} from "react"
 import {TextInput, Card, Button, Callout, Subtitle, Col, Grid} from "@tremor/react"
 import {ExclamationIcon} from "@heroicons/react/solid"
 import {signUp} from "../api/auth_api"
 import {LoadCanvasTemplateNoReload, loadCaptchaEnginge, validateCaptcha} from "react-simple-captcha"
-import PasswordStrengthBar from "react-password-strength-bar"
 import {Link} from "react-router-dom"
 import apiErrors from "../api/errors"
 import {withLoader} from "../App"
 import logo from "../assets/logo.svg"
+
+const PasswordStrengthBar = lazy(() => import("react-password-strength-bar"))
 
 class Signup extends Component {
 	constructor(props) {
