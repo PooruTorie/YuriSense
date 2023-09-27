@@ -1,4 +1,4 @@
-import {Component, lazy} from "react"
+import {Component, lazy, Suspense} from "react"
 import {TextInput, Card, Button, Callout, Subtitle, Col, Grid} from "@tremor/react"
 import {ExclamationIcon} from "@heroicons/react/solid"
 import {signUp} from "../api/auth_api"
@@ -185,11 +185,13 @@ class Signup extends Component {
 							onChange={this.update.bind(this)}
 							disabled={this.state.loading}
 						/>
-						<PasswordStrengthBar
-							onChangeScore={(passwordScore) => this.setState({passwordScore})}
-							minLength={8}
-							password={this.state.password}
-						/>
+						<Suspense fallback={<></>}>
+							<PasswordStrengthBar
+								onChangeScore={(passwordScore) => this.setState({passwordScore})}
+								minLength={8}
+								password={this.state.password}
+							/>
+						</Suspense>
 						<TextInput
 							className={"mt-1 mb-1"}
 							placeholder={"Repeat Password"}
