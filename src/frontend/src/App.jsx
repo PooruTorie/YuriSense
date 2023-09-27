@@ -1,4 +1,4 @@
-import {Component, lazy} from "react"
+import {Component, lazy, Suspense} from "react"
 import {createBrowserRouter, RouterProvider, useLoaderData, useParams, useNavigate, useLocation} from "react-router-dom"
 import OverviewContentPanel from "./main/overview/SensorOverviewPanel"
 import {loader as SensorPanelLoader} from "./main/sensor/SensorPanels"
@@ -10,6 +10,8 @@ import {AuthProvider} from "./auth/AuthContext"
 import RackManager from "./admin/manager/RackManager"
 import SensorManager from "./admin/manager/SensorManager"
 import UserManager from "./admin/manager/UserManager"
+import {Subtitle} from "@tremor/react"
+import LoadingPanel from "./main/LoadingPanel"
 
 export function withLoader(Component) {
 	return (props) => (
@@ -31,7 +33,11 @@ export default class App extends Component {
 		let router = createBrowserRouter([
 			{
 				path: "/",
-				element: <MainContentPanel />,
+				element: (
+					<Suspense fallback={<LoadingPanel />}>
+						<MainContentPanel />
+					</Suspense>
+				),
 				children: [
 					{
 						index: true,
@@ -49,7 +55,9 @@ export default class App extends Component {
 				path: "/admin",
 				element: (
 					<AuthProvider login={<Login />}>
-						<AdminPanel />
+						<Suspense fallback={<LoadingPanel />}>
+							<AdminPanel />
+						</Suspense>
 					</AuthProvider>
 				),
 				children: [

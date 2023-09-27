@@ -185,7 +185,7 @@ class Signup extends Component {
 							onChange={this.update.bind(this)}
 							disabled={this.state.loading}
 						/>
-						<Suspense fallback={<></>}>
+						<Suspense fallback={<Subtitle>Loading ...</Subtitle>}>
 							<PasswordStrengthBar
 								onChangeScore={(passwordScore) => this.setState({passwordScore})}
 								minLength={8}
