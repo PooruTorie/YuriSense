@@ -20,7 +20,8 @@
 		"react-scripts": "5.0.1",
 		"react-simple-captcha": "^9.3.0",
 		"react-password-strength-bar": "^0.4.1",
-		"react-spinners": "^0.13.8"
+		"react-spinners": "^0.13.8",
+		"react-modal": "^3.16.1"
 	},
 	"scripts": {
 		"analyze": "source-map-explorer 'build/static/js/*.js'",

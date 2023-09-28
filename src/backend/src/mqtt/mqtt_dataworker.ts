@@ -13,7 +13,7 @@ export default class MqttDataWorker {
 
 		mqtt.on("newSensor", (sensor: Sensor) => {
 			Logger.info("New Sensor:", sensor.toString())
-			database.connectNewSensor(sensor).then((value) => {
+			database.sensor.connect(sensor).then((value) => {
 				if (value) {
 					if (value === "new") {
 						RealtimeRouter.events.emit("send", "new", sensor.uuid)
@@ -24,7 +24,7 @@ export default class MqttDataWorker {
 			})
 
 			sensor.on("message", (topic: string, messageLabel: string, message: Buffer) => {
-				database.collectSensorData(sensor, messageLabel, message)
+				database.sensor_data.add(sensor, messageLabel, message)
 				RealtimeRouter.events.emit("send", sensor.uuid, {
 					[messageLabel]: message.toString()
 				})
@@ -32,12 +32,12 @@ export default class MqttDataWorker {
 
 			sensor.on("alive", () => {
 				Logger.debug("Sensor Alive", sensor.uuid)
-				database.sensorAlive(sensor)
+				database.sensor.alive(sensor)
 			})
 		})
 
 		mqtt.on("removeSensor", (sensor: Sensor) => {
-			database.sensorDead(sensor)
+			database.sensor.dead(sensor)
 			Logger.info("Sensor Dead", sensor.uuid)
 			RealtimeRouter.events.emit("send", "disconnect", sensor.uuid)
 		})

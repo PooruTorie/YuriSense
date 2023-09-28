@@ -8,5 +8,6 @@ export default {
 	name_empty: "The name could not be empty.",
 	name_to_long: "The name is longer than 20 chars.",
 	uuid_invalide: "The UUID could not be found.",
+	no_permission: "You need to be admin.",
 	internal_error: "Internal error occurred."
 }

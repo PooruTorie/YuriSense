@@ -12,6 +12,8 @@ import MqttDataWorker from "../mqtt/mqtt_dataworker"
 import UpdatesRouter from "./routes/updates"
 import UserRouter from "./routes/user"
 import AuthMiddleware from "../middleware/auth"
+import RackRouter from "./routes/rack"
+import RackQuery from "../db/db_rack_querys"
 
 export default class YurisenseAPI {
 	public database: DataBase
@@ -45,6 +47,7 @@ export default class YurisenseAPI {
 		this.app.use("/api" + RealtimeRouter.route, new RealtimeRouter(this).get())
 		this.app.use("/api" + UpdatesRouter.route, new UpdatesRouter(this).get())
 		this.app.use("/api" + UserRouter.route, new UserRouter(this).get())
+		this.app.use("/api" + RackRouter.route, new RackRouter(this).get())
 	}
 
 	serve() {

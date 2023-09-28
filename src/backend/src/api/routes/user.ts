@@ -8,24 +8,32 @@ export default class UserRouter {
 
 	constructor(api: YurisenseAPI) {
 		this.router = Router()
-		this.router.post("/signup", async (req, res) => {
-			const {email, password, firstName, lastName, phone} = req.body
-			if (!password || !email || !firstName || !lastName || !phone) {
+		this.router.post("/signup", api.auth.authenticateToken, async (req, res) => {
+			if (!req.user) {
+				return res.json({error: "token_invalide"})
+			}
+
+			const {email, password, firstName, lastName, phone, admin} = req.body
+			if (!password || !email || !firstName || !lastName || !phone || typeof admin == "undefined") {
 				res.json({error: "parameter_missing"})
 				return
 			}
 
-			const user = await api.database.getUserByEmail(email)
+			if (req.user.admin) {
+				return res.json({
+					error: "no_permission"
+				})
+			}
+
+			const user = await api.database.user.getByEmail(email)
 			if (user) {
 				return res.json({
 					error: "email_duplicate"
 				})
 			}
 
-			let admin = await api.database.isFirstUser()
-
-			await api.database
-				.createUser(email, password, admin, firstName, lastName, phone)
+			await api.database.user
+				.create(email, password, admin, firstName, lastName, phone)
 				.then((id) => {
 					res.json({message: "User created", userId: id})
 				})
@@ -41,21 +49,21 @@ export default class UserRouter {
 				return res.json({error: "parameter_missing"})
 			}
 
-			const user = await api.database.getUserByEmail(email)
-			if (user === null) {
+			const user = await api.database.user.getByEmail(email)
+			if (!user) {
 				return res.json({error: "user_not_found"})
 			}
 
-			if (!(await argon2.verify(user?.password, password))) {
+			if (!(await argon2.verify(user.password, password))) {
 				return res.json({error: "login_failed"})
 			}
 			const userData = {
-				userId: user?.id,
-				firstName: user?.firstName,
-				lastName: user?.lastName,
-				phone: user?.phone,
+				userId: user.id,
+				firstName: user.firstName,
+				lastName: user.lastName,
+				phone: user.phone,
 				email: email,
-				admin: user?.admin
+				admin: user.admin
 			}
 			const token = api.auth.createToken(userData, "8h")
 			if (!token) {
@@ -67,14 +75,13 @@ export default class UserRouter {
 		})
 
 		this.router.post("/signout", api.auth.authenticateToken, async (req, res) => {
-			if (req.user) {
-				api.auth.revokeToken(req.user)
-				return res.json({
-					message: `Token from ${req.user.email} has been revoked`
-				})
-			} else {
+			if (!req.user) {
 				return res.json({error: "token_invalide"})
 			}
+			api.auth.revokeToken(req.user)
+			return res.json({
+				message: `Token from ${req.user.email} has been revoked`
+			})
 		})
 	}
 

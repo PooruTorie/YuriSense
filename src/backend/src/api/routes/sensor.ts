@@ -9,7 +9,7 @@ export default class SensorRouter {
 		this.router = Router()
 
 		this.router.get("/new", async (req, res) => {
-			res.json(await api.database.getNewSensors())
+			res.json(await api.database.sensor.getNew())
 		})
 
 		this.router.put("/known", async (req, res) => {
@@ -25,20 +25,20 @@ export default class SensorRouter {
 				res.json({error: "name_to_long"})
 				return
 			}
-			if (!(await api.database.checkUUID(req.body.uuid))) {
+			if (!(await api.database.sensor.uuidExists(req.body.uuid))) {
 				res.json({error: "uuid_invalide"})
 				return
 			}
-			await api.database.setName(req.body.uuid, req.body.name)
+			await api.database.sensor.setName(req.body.uuid, req.body.name)
 			res.json({success: "Changed Name."})
 		})
 
 		this.router.get("/known", async (req, res) => {
-			res.json(await api.database.getConnectedSensors())
+			res.json(await api.database.sensor.getConnected())
 		})
 
 		this.router.get("/:uuid", async (req, res) => {
-			res.json(await api.database.getSingleSensorData(req.params.uuid))
+			res.json(await api.database.sensor_data.getSingle(req.params.uuid))
 		})
 
 		this.router.get("/:uuid/settings", async (req, res) => {
@@ -51,7 +51,7 @@ export default class SensorRouter {
 		})
 
 		this.router.get("/:uuid/:label", async (req, res) => {
-			const rawData = await api.database.getSensorData(req.params.uuid, req.params.label)
+			const rawData = await api.database.sensor_data.get(req.params.uuid, req.params.label)
 			res.json(
 				rawData.map((rawDataObject) => {
 					rawDataObject.value = rawDataObject.value.toString()

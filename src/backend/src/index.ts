@@ -20,10 +20,10 @@ if (AddressExtractor.extract()) {
 	const dataWorker = new MqttDataWorker(mqtt, database)
 	const api = new YurisenseAPI(3000, database, dataWorker, 12666)
 	api.serve()
-	database.allSensorsDead()
+	database.sensor.allDead()
 
 	onExit((resolve) =>
-		database.allSensorsDead().finally(() => {
+		database.sensor.allDead().finally(() => {
 			Logger.info("Stopped")
 			resolve()
 		})

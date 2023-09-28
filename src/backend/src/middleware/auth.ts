@@ -28,7 +28,7 @@ export default class AuthMiddleware {
 	authenticateToken(req: Request, res: Response, next: NextFunction) {
 		const secretKey = process.env.SECRET_KEY as string
 		if (!secretKey) {
-			return res.status(500).json({message: "Internal server error"})
+			return res.status(500).json({error: "internal_error"})
 		}
 		const token = req.headers["yuri-auth-token"] as string | null | undefined
 
@@ -37,12 +37,12 @@ export default class AuthMiddleware {
 		}
 
 		if (AuthMiddleware.revokedTokens.has(token)) {
-			return res.status(401).json({message: "Access token was revoked."})
+			return res.json({message: "Access token was revoked.", error: "token_invalide"})
 		}
 
 		jwt.verify(token, secretKey, (err, user) => {
 			if (err) {
-				return res.status(498).json({message: "Invalid token."})
+				return res.json({error: "token_invalide"})
 			}
 			req.user = {
 				...(user as UserData),
