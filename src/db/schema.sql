@@ -87,6 +87,18 @@ CREATE TABLE IF NOT EXISTS `yurisense`.`Log` (
          ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
+-- -----------------------------------------------------
+-- Table `yurisense`.`LoginRetries`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `yurisense`.`LoginRetries` (
+  `ip` CHAR(16) NOT NULL,
+  `retries` INT NOT NULL,
+  `waitTimeMinutes` INT NOT NULL DEFAULT 5,
+  `lastRetry` TIMESTAMP,
+  PRIMARY KEY (`ip`))
+ENGINE = InnoDB;
+
+
 -- -------------------------------------------------------
 -- Create Yuri user
 -- -------------------------------------------------------
