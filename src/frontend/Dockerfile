@@ -5,7 +5,7 @@ RUN apt-get -y upgrade
 
 WORKDIR /app
 
-COPY package.json /app/package.json
+COPY serve/package.json /app/package.json
 RUN npm i
 
 COPY serve /app
