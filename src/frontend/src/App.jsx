@@ -12,6 +12,7 @@ import SensorManager from "./admin/manager/SensorManager"
 import UserManager from "./admin/manager/UserManager"
 import {Subtitle} from "@tremor/react"
 import LoadingPanel from "./main/LoadingPanel"
+import InitUserManager from "./menu/InitUserManager"
 
 export function withLoader(Component) {
 	return (props) => (
@@ -74,13 +75,14 @@ export default class App extends Component {
 						element: <UserManager />
 					}
 				]
-			},
-			{
-				path: "/admin/signup",
-				element: <Signup />
 			}
 		])
 
-		return <RouterProvider router={router} />
+		return (
+			<>
+				<InitUserManager />
+				<RouterProvider router={router} />
+			</>
+		)
 	}
 }

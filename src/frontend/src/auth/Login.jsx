@@ -1,5 +1,5 @@
 import {Component} from "react"
-import {TextInput, Card, Button, Callout, Subtitle, Grid, Col} from "@tremor/react"
+import {TextInput, Card, Button, Callout} from "@tremor/react"
 import {ExclamationIcon} from "@heroicons/react/solid"
 import {signIn} from "../api/auth_api"
 import AuthContext from "./AuthContext"
@@ -88,10 +88,12 @@ export default class Login extends Component {
 							errorMessage={this.state.passwordError}
 							onChange={this.update.bind(this)}
 							disabled={this.state.loading}
+							onKeyDown={(e) => {
+								if (e.code === "Enter") {
+									this.login()
+								}
+							}}
 						/>
-						<Link className={"mt-3 text-center"} to={"/admin/signup"}>
-							<Subtitle className={"hover:text-blue-600"}>Create Account</Subtitle>
-						</Link>
 						<Button className={"w-[100%] m-1"} loading={this.state.loading} onClick={this.login.bind(this)}>
 							Login
 						</Button>

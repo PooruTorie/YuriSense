@@ -33,7 +33,7 @@ export default class AuthMiddleware {
 		const token = req.headers["yuri-auth-token"] as string | null | undefined
 
 		if (!token) {
-			return res.status(401).json({message: "Access token not provided."})
+			return res.status(401).json({message: "Access token not provided.", error: "no_token"})
 		}
 
 		if (AuthMiddleware.revokedTokens.has(token)) {

@@ -43,6 +43,32 @@ export default class UserRouter {
 				})
 		})
 
+		this.router.post("/init", async (req, res) => {
+			if (!(await api.database.user.isFirst())) {
+				return res.json({error: "no_permission"})
+			}
+
+			const {email, password, firstName, lastName, phone} = req.body
+			if (!password || !email || !firstName || !lastName || !phone) {
+				res.json({error: "parameter_missing"})
+				return
+			}
+
+			await api.database.user
+				.create(email, password, true, firstName, lastName, phone)
+				.then((id) => {
+					res.json({message: "User created", userId: id})
+				})
+				.catch((error) => {
+					console.error("Error:", error)
+					res.json({error: "internal_error"})
+				})
+		})
+
+		this.router.get("/init", async (req, res) => {
+			res.json({initAvailable: await api.database.user.isFirst()})
+		})
+
 		this.router.post("/signin", async (req, res) => {
 			const {email, password} = req.body
 			if (!email || !password) {

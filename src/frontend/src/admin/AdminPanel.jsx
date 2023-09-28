@@ -27,7 +27,9 @@ export default class AdminPanel extends Component {
 								You can only use this Application as Admin.
 							</Callout>
 							<div className={"text-center"}>
-								<LogoutButton className={"mt-6"}>Logout</LogoutButton>
+								<LogoutButton className={"mt-6"} color={"red"}>
+									Logout
+								</LogoutButton>
 							</div>
 						</div>
 					</>
@@ -46,13 +48,19 @@ export default class AdminPanel extends Component {
 				<TopBar
 					button={[
 						[
-							<LogoutButton to={isApplication ? undefined : "/"} className={"m-auto"}>
-								Logout from {this.context.auth.firstName} {this.context.auth.lastName}
-							</LogoutButton>,
+							<Subtitle>
+								Name: {this.context.auth.firstName} {this.context.auth.lastName}
+							</Subtitle>,
 							2
 						],
-						[<Subtitle>Email: {this.context.auth.email}</Subtitle>, 3],
-						[<Subtitle>Phone: {this.context.auth.phone}</Subtitle>, 3]
+						[<Subtitle>Email: {this.context.auth.email}</Subtitle>, 2],
+						[<Subtitle>Phone: {this.context.auth.phone}</Subtitle>, 3],
+						[
+							<LogoutButton to={isApplication ? undefined : "/"} color={"red"} className={"m-auto"}>
+								Logout
+							</LogoutButton>,
+							1
+						]
 					]}
 				/>
 				<Grid numCols={10} className={"h-[90%]"}>
