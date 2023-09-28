@@ -40,7 +40,7 @@ export default class LoginRetryQuery extends QueryCollection {
 
    async decrememtRetryCount(ip: string): Promise<boolean> {
       return !(await this.connection.execute(
-         'UPDATE LoginRetries SET retries=retries-1, waitTimeMinuts=0 WHERE ip=:ip',
+         'UPDATE LoginRetries SET retries=retries-1, waitTimeMinutes=0 WHERE ip=:ip',
          {
             ip: ip,
          },
