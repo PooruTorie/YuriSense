@@ -1,5 +1,5 @@
 import {Component, lazy, Suspense} from "react"
-import {TextInput, Card, Button, Callout, Subtitle, Col, Grid} from "@tremor/react"
+import {Button, Callout, Card, Col, Grid, Subtitle, TextInput} from "@tremor/react"
 import {ExclamationIcon} from "@heroicons/react/solid"
 import {signUp} from "../api/auth_api"
 import {LoadCanvasTemplateNoReload, loadCaptchaEnginge, validateCaptcha} from "react-simple-captcha"

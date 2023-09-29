@@ -1,9 +1,6 @@
 import {Component} from "react"
-import {Link} from "react-router-dom"
 import logo from "../assets/logo.svg"
-import {Button, Callout, Card, Subtitle, TextInput} from "@tremor/react"
-import {ExclamationIcon} from "@heroicons/react/solid"
-import {ClipLoader, MoonLoader} from "react-spinners"
+import {MoonLoader} from "react-spinners"
 
 export default class LoadingPanel extends Component {
 	render() {

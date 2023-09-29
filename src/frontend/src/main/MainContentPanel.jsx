@@ -4,7 +4,6 @@ import {Link, Outlet} from "react-router-dom"
 import {withLoader} from "../App"
 import {Component} from "react"
 import TopBar, {DiscoverButton} from "../menu/TopBar"
-import {AuthConsumer} from "../auth/AuthContext"
 
 export class MainContentPanel extends Component {
 	render() {

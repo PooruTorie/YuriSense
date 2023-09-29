@@ -1,8 +1,6 @@
-import React, {Component} from "react"
+import React, {Component, Context} from "react"
 import jwt_decode from "jwt-decode"
 import {signOut} from "../api/auth_api"
-import {Context} from "react"
-import {useNavigate} from "react-router-dom"
 import {withLoader} from "../App"
 
 const AuthContext: Context<{

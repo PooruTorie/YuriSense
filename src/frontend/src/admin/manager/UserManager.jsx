@@ -1,9 +1,7 @@
 import {Component} from "react"
 import {Callout, Card, List, ListItem, Metric, Title} from "@tremor/react"
 import AuthContext from "../../auth/AuthContext"
-import logo from "../../assets/logo.svg"
 import {ExclamationIcon} from "@heroicons/react/solid"
-import {LogoutButton} from "../../auth/Login"
 
 export default class UserManager extends Component {
 	static contextType = AuthContext

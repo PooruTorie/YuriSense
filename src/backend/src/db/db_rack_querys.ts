@@ -14,4 +14,19 @@ export default class RackQuery extends QueryCollection {
 		const [rows, fields] = await this.connection.query<RowDataPacket[]>("SELECT * FROM Rack")
 		return rows
 	}
+	async getById(id: number) {
+		const [rows, fields] = await this.connection.query<RowDataPacket[]>("SELECT * FROM Rack WHERE id=:id", {id})
+		if (rows.length === 0) {
+			return undefined
+		}
+		return rows[0]
+	}
+
+	async update(id: number, name: string, maxTemp: null | number) {
+		await this.connection.execute("UPDATE Rack SET name=:name, maximalTemperature=:maxTemp WHERE id=:id", {
+			name,
+			id,
+			maxTemp
+		})
+	}
 }
