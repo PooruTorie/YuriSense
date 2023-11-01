@@ -35,6 +35,6 @@ if (fs.existsSync("ssl/server.crt") && fs.existsSync("ssl/server.key")) {
 			console.log("HTTPS Started on 4000")
 		})
 }
-app.listen(3001, () => {
+app.listen(3000, () => {
 	console.log("HTTP Started on 3000")
 })
