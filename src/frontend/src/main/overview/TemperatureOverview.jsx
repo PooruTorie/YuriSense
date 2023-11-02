@@ -1,4 +1,4 @@
-import {Card, LineChart, Metric, Tab, TabList, Title} from "@tremor/react"
+import {Card, Grid, LineChart, Metric, Tab, TabList, Title, Col, Subtitle} from "@tremor/react"
 import {subDays, subHours, subMinutes} from "date-fns"
 import {getSensorDataTimeline} from "../../api/sensor_api"
 import RealtimeComponent from "../../utils/RealtimeComponent"
@@ -84,19 +84,64 @@ export default class TemperatureOverview extends RealtimeComponent {
 				Temperature: item.value
 			}
 		})
+		let max = null
+		let average = null
+		if (filteredData.length > 0) {
+			let sum = 0
+			for (let i = 0; i < filteredData.length; i++) {
+				sum += parseFloat(filteredData[i].Temperature)
+				console.log(sum)
+			}
+
+			average = Math.round(sum / filteredData.length)
+
+			max = parseFloat(filteredData[0].Temperature) 
+			for (let i = 1; i < parseFloat(filteredData.length); i++) {
+				if (parseFloat(filteredData[i].Temperature) > max) {
+					max = parseFloat(filteredData[i].Temperature)
+				}
+			}
+		}
 		return (
 			<Card>
-				<Title>
-					<Metric>
-						{filteredData.length > 0 ? filteredData[filteredData.length - 1].Temperature : null}
-						°C
-					</Metric>
-					Temperature Chart
-				</Title>
+				<Grid className="mb-9" numCols={3}>
+					<Col>
+						<Subtitle className="flex justify-center">CurrentTemp</Subtitle>
+					</Col>
+
+					<Col>
+						<Subtitle className="flex justify-center">AverageTemp</Subtitle>
+					</Col>
+
+					<Col>
+						<Subtitle className="flex justify-center">MaxTemp</Subtitle>
+					</Col>
+					<Col>
+						<Metric className="flex justify-center">
+							{filteredData.length > 0 ? filteredData[filteredData.length - 1].Temperature : null}
+							°C
+						</Metric>
+					</Col>
+
+					<Col>
+						<Metric className="flex justify-center">
+							{average}
+							°C
+						</Metric>
+					</Col>
+
+					<Col>
+						<Metric className="flex justify-center">
+							{max}
+							°C
+						</Metric>
+					</Col>
+				</Grid>
+				<Title className="underline">Temperature Chart</Title>
 				<TabList
 					defaultValue={this.state.filter}
 					onValueChange={(value) => this.setState({filter: value})}
-					className="mt-10"
+					className="mt-2"
 				>
 					<Tab value="M" text="Minute" />
 					<Tab value="H" text="Hour" />
