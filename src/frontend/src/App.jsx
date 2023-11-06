@@ -58,10 +58,12 @@ export default class App extends Component {
 					</AuthProvider>
 				),
 				children: [
+					/**
 					{
 						path: "racks",
 						element: <RackManager />
 					},
+						**/
 					{
 						path: "sensors",
 						element: <SensorManager />

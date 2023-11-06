@@ -37,7 +37,7 @@ export default class AdminPanel extends Component {
 			}
 		}
 		let managers = [
-			{value: "/racks", text: "Racks"},
+			//{value: "/racks", text: "Racks"},
 			{value: "/sensors", text: "Sensors"}
 		]
 		if (this.context.auth.admin) {

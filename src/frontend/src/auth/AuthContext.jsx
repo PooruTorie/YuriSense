@@ -3,14 +3,7 @@ import jwt_decode from "jwt-decode"
 import {signOut} from "../api/auth_api"
 import {withLoader} from "../App"
 
-const AuthContext: Context<{
-	userId: number,
-	firstName: string,
-	lastName: string,
-	phone: string,
-	email: string,
-	admin: boolean
-}> = React.createContext()
+const AuthContext = React.createContext()
 
 class AuthProviderClass extends Component {
 	constructor(props) {

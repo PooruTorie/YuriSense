@@ -153,25 +153,35 @@ export class Sensor extends EventEmitter {
 	}
 
 	private async requestConfiguration() {
-		const res = await axios.get("http://" + this._ip + "/")
-		if (res.status == 200) {
-			if (res.data.version) {
-				this._version = res.data.version
+		try {
+			const res = await axios.get("http://" + this._ip + "/")
+			if (res.status == 200) {
+				if (res.data.version) {
+					this._version = res.data.version
+				}
+				if (res.data.type) {
+					this._type = res.data.type
+				}
+				Logger.debug("Request Configuration", this.toString())
 			}
-			if (res.data.type) {
-				this._type = res.data.type
-			}
-			Logger.debug("Request Configuration", this.toString())
+		} catch (e) {
+			Logger.error("Catch error from Sensor Configuration", e)
+			return this.requestConfiguration()
 		}
 	}
 
 	private async requestSettings() {
-		const res = await axios.get("http://" + this._ip + "/settings")
-		if (res.status == 200) {
-			if (res.data) {
-				this.settings = res.data
+		try {
+			const res = await axios.get("http://" + this._ip + "/settings")
+			if (res.status == 200) {
+				if (res.data) {
+					this.settings = res.data
+				}
+				Logger.debug("Request Settings", this.settings)
 			}
-			Logger.debug("Request Settings", this.settings)
+		} catch (e) {
+			Logger.error("Catch error from Sensor Settings", e)
+			return this.requestSettings()
 		}
 	}
 }

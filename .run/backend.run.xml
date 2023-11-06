@@ -8,6 +8,7 @@
     <node-interpreter value="project" />
     <envs>
       <env name="SECRET_KEY" value="cool" />
+      <env name="LEVEL" value="debug" />
     </envs>
     <method v="2" />
   </configuration>

@@ -7,7 +7,7 @@ export async function signUp(
 	phone: string,
 	admin: boolean
 ) {
-	const res = await fetch("/api/user/signup", {
+	const res = await fetch("/api/auth/signup", {
 		method: "POST",
 		headers: {"Content-Type": "application/json", "yuri-auth-token": token},
 		body: JSON.stringify({firstName, lastName, email, password, phone, admin})
@@ -16,7 +16,7 @@ export async function signUp(
 }
 
 export async function signIn(email: string, password: string) {
-	const res = await fetch("/api/user/signin", {
+	const res = await fetch("/api/auth/signin", {
 		method: "POST",
 		headers: {"Content-Type": "application/json"},
 		body: JSON.stringify({email, password})
@@ -25,7 +25,7 @@ export async function signIn(email: string, password: string) {
 }
 
 export async function signOut(token: string) {
-	const res = await fetch("/api/user/signout", {
+	const res = await fetch("/api/auth/signout", {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
@@ -36,12 +36,12 @@ export async function signOut(token: string) {
 }
 
 export async function isInitAvailable() {
-	const res = await fetch("/api/user/init")
+	const res = await fetch("/api/auth/init")
 	return (await res.json()).initAvailable
 }
 
 export async function initAdmin(firstName: string, lastName: string, email: string, password: string, phone: string) {
-	const res = await fetch("/api/user/init", {
+	const res = await fetch("/api/auth/init", {
 		method: "POST",
 		headers: {"Content-Type": "application/json"},
 		body: JSON.stringify({firstName, lastName, email, password, phone})

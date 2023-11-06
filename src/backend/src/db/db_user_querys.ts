@@ -88,4 +88,61 @@ export default class UserQuery extends QueryCollection {
 			ip: ip
 		}))
 	}
+
+	async get() {
+		const [rows, fields] = await this.connection.query<RowDataPacket[]>(
+			"SELECT id, email, admin, firstName, lastName, phone FROM User"
+		)
+		return rows
+	}
+
+	async getById(id: number) {
+		const [rows, fields] = await this.connection.query<RowDataPacket[]>("SELECT * FROM User WHERE id=:id", {id})
+		if (rows.length === 0) {
+			return undefined
+		}
+		return rows[0]
+	}
+
+	async update(
+		id: number,
+		firstName: string,
+		lastName: string,
+		password: undefined | string,
+		email: string,
+		phone: string,
+		admin: boolean
+	) {
+		if (password) {
+			const hash = await argon2.hash(password)
+			await this.connection.execute(
+				"UPDATE User SET firstName=:firstName, lastName=:lastName, email=:email, phone=:phone, admin=:admin, password=:hash WHERE id=:id",
+				{
+					id,
+					firstName,
+					lastName,
+					email,
+					phone,
+					admin,
+					hash
+				}
+			)
+		} else {
+			await this.connection.execute(
+				"UPDATE User SET firstName=:firstName, lastName=:lastName, email=:email, phone=:phone, admin=:admin WHERE id=:id",
+				{
+					id,
+					firstName,
+					lastName,
+					email,
+					phone,
+					admin
+				}
+			)
+		}
+	}
+
+	async delete(id: number) {
+		await this.connection.execute("DELETE FROM User WHERE id=:id", {id})
+	}
 }

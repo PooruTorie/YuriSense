@@ -14,6 +14,7 @@ export default class RackQuery extends QueryCollection {
 		const [rows, fields] = await this.connection.query<RowDataPacket[]>("SELECT * FROM Rack")
 		return rows
 	}
+
 	async getById(id: number) {
 		const [rows, fields] = await this.connection.query<RowDataPacket[]>("SELECT * FROM Rack WHERE id=:id", {id})
 		if (rows.length === 0) {

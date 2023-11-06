@@ -14,8 +14,9 @@ export default class RackManager extends Component {
 		this.state = {
 			racks: [],
 			addModalOpen: false,
-			changeRackId: undefined,
+			changeId: undefined,
 			error: undefined,
+			loading: false,
 			rackName: "",
 			rackNameOld: undefined,
 			rackNameChange: false,
@@ -33,15 +34,15 @@ export default class RackManager extends Component {
 	async createUpdateRack() {
 		let ready = true
 		if (this.state.rackName === "") {
-			this.setState({rackNameError: "First Name is Empty"})
+			this.setState({rackNameError: "Name is Empty"})
 			ready = false
 		}
 		if (ready) {
 			this.setState({loading: true})
-			if (this.state.changeRackId) {
+			if (this.state.changeId) {
 				const result = await updateRack(
 					this.context.token,
-					this.state.changeRackId,
+					this.state.changeId,
 					this.state.rackName,
 					this.state.maximalTemperature
 				)
@@ -49,8 +50,8 @@ export default class RackManager extends Component {
 					this.setState({loading: false, error: apiErrors[result.error]})
 				} else {
 					let racks = this.state.racks
-					racks[racks.findIndex((rack) => rack.id === this.state.changeRackId)] = {
-						id: this.state.changeRackId,
+					racks[racks.findIndex((rack) => rack.id === this.state.changeId)] = {
+						id: this.state.changeId,
 						name: this.state.rackName,
 						maximalTemperature: this.state.maximalTemperature
 					}
@@ -58,7 +59,7 @@ export default class RackManager extends Component {
 						racks,
 						loading: false,
 						addModalOpen: false,
-						changeRackId: undefined
+						changeId: undefined
 					})
 					this.state.rackName = ""
 				}
@@ -78,7 +79,7 @@ export default class RackManager extends Component {
 						],
 						loading: false,
 						addModalOpen: false,
-						changeRackId: undefined,
+						changeId: undefined,
 						error: undefined
 					})
 					this.state.rackName = ""
@@ -118,7 +119,7 @@ export default class RackManager extends Component {
 				>
 					Add
 				</Button>
-				<Modal className={"inset-4"} isOpen={this.state.addModalOpen || !!this.state.changeRackId}>
+				<Modal className={"inset-4"} isOpen={this.state.addModalOpen || !!this.state.changeId}>
 					<div className={"text-center"}>
 						<Metric className={"mb-10 mt-10"}>{this.state.addModalOpen ? "Create new Rack" : "Edit Rack"}</Metric>
 						<div className={"flex"}>
@@ -168,7 +169,7 @@ export default class RackManager extends Component {
 											onClick={() =>
 												this.setState({
 													addModalOpen: false,
-													changeRackId: undefined
+													changeId: undefined
 												})
 											}
 										>
@@ -183,12 +184,12 @@ export default class RackManager extends Component {
 				<List>
 					{this.state.racks.map((rack) => (
 						<ListItem>
-							<Title>{rack.name}</Title>
+							<Title className={"align-middle"}>{rack.name}</Title>
 							<Grid numCols={12}>
-								<Col numColSpan={2}>
+								<Col numColSpan={2} className={"self-center"}>
 									<Subtitle>Id: {rack.id}</Subtitle>
 								</Col>
-								<Col numColSpan={6}>
+								<Col numColSpan={6} className={"self-center"}>
 									<Subtitle>Max Temperature: {rack.maximalTemperature || "Not Set"}</Subtitle>
 								</Col>
 								<Col>
@@ -197,7 +198,7 @@ export default class RackManager extends Component {
 										onClick={() =>
 											this.setState({
 												error: undefined,
-												changeRackId: rack.id,
+												changeId: rack.id,
 												rackName: rack.name,
 												rackNameOld: rack.name,
 												rackNameError: undefined,

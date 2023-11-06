@@ -49,7 +49,12 @@
 		]
 	},
 	"devDependencies": {
-		"@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+		"@babel/plugin-proposal-private-property-in-object": "*",
 		"source-map-explorer": "^2.5.3"
+	},
+	"overrides": {
+		"react-html-parser": {
+			"react": "$react"
+		}
 	}
 }
