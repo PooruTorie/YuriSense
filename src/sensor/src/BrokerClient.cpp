@@ -10,8 +10,10 @@ BrokerClient::BrokerClient(const WiFiClient &net) : net(net), client(new MQTTCli
 
 void BrokerClient::handle() {
     if (isReady) {
-        if (!client->connected()) {
+        if (!client->connected())
+            Serial.println("MQTT Disconnected Try Restart");
             if (!connect()) {
+                Serial.println("MQTT Restart Failed");
                 ESP.restart();
             }
         }

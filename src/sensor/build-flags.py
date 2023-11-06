@@ -13,7 +13,7 @@ with open("config.json", encoding="UTF8") as config:
     for key in config:
         value = config[key]
         key = key.upper()
-        if key == "VERSION":
+        if key.replace("_STR", "") == "VERSION":
             version = value
         if type(value) == str and (not value.isnumeric() or key.endswith("_STR")):
             value = "\\\"" + value + "\\\""
