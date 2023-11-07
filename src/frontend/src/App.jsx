@@ -1,14 +1,22 @@
 import {Component, lazy, Suspense} from "react"
-import {createBrowserRouter, RouterProvider, useLoaderData, useLocation, useNavigate, useParams} from "react-router-dom"
+import {
+	createBrowserRouter,
+	RouterProvider,
+	useLoaderData,
+	useLocation,
+	useNavigate,
+	useParams,
+	useRouteError
+} from "react-router-dom"
 import OverviewContentPanel, {loader as SensorLoader} from "./main/overview/SensorOverviewPanel"
 import SensorPanels, {loader as SensorPanelLoader} from "./main/sensor/SensorPanels"
 import Login from "./auth/Login"
 import {AuthProvider} from "./auth/AuthContext"
-import RackManager from "./admin/manager/RackManager"
 import SensorManager from "./admin/manager/SensorManager"
 import UserManager from "./admin/manager/UserManager"
 import LoadingPanel from "./main/LoadingPanel"
 import InitUserManager from "./menu/InitUserManager"
+import ErrorPanel from "./menu/ErrorPanel"
 
 export function withLoader(Component) {
 	return (props) => (
@@ -18,6 +26,7 @@ export function withLoader(Component) {
 			location={useLocation()}
 			params={useParams()}
 			loaderData={useLoaderData()}
+			loaderError={useRouteError()}
 		/>
 	)
 }
@@ -35,6 +44,7 @@ export default class App extends Component {
 						<MainContentPanel />
 					</Suspense>
 				),
+				errorElement: <ErrorPanel />,
 				children: [
 					{
 						index: true,
@@ -57,6 +67,7 @@ export default class App extends Component {
 						</Suspense>
 					</AuthProvider>
 				),
+				errorElement: <ErrorPanel />,
 				children: [
 					/**
 					{
