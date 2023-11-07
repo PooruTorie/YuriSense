@@ -1,5 +1,5 @@
 import {Component, lazy, Suspense} from "react"
-import {Button, Callout, Card, Col, Grid, Icon, List, ListItem, Metric, Subtitle, TextInput, Title} from "@tremor/react"
+import {Button, Callout, Card, Col, Grid, List, ListItem, Metric, Subtitle, TextInput, Title} from "@tremor/react"
 import AuthContext from "../../auth/AuthContext"
 import {CheckIcon, CogIcon, ExclamationIcon, PlusIcon, TrashIcon, XIcon} from "@heroicons/react/solid"
 import {deleteUser, getUsers, updateUser} from "../../api/user_api"
@@ -171,7 +171,7 @@ export default class UserManager extends Component {
 		}
 	}
 
-	async createUpdateRack() {
+	async createUpdateUser() {
 		let ready = true
 		if (this.state.firstName === "") {
 			this.setState({firstNameError: "First Name is Empty"})
@@ -399,7 +399,7 @@ export default class UserManager extends Component {
 									<Button
 										className={"w-[100%]"}
 										loading={this.state.loading}
-										onClick={this.createUpdateRack.bind(this)}
+										onClick={this.createUpdateUser.bind(this)}
 										disabled={
 											!this.state.firstNameChange &&
 											!this.state.lastNameChange &&

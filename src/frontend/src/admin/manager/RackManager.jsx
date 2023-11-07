@@ -61,7 +61,6 @@ export default class RackManager extends Component {
 						addModalOpen: false,
 						changeId: undefined
 					})
-					this.state.rackName = ""
 				}
 			} else {
 				const result = await createRack(this.context.token, this.state.rackName)
@@ -82,7 +81,6 @@ export default class RackManager extends Component {
 						changeId: undefined,
 						error: undefined
 					})
-					this.state.rackName = ""
 				}
 			}
 		}
