@@ -91,7 +91,7 @@ ENGINE = InnoDB;
 -- Table `yurisense`.`LoginRetries`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `yurisense`.`LoginRetries` (
-  `ip` CHAR(16) NOT NULL,
+  `ip` CHAR(36) NOT NULL,
   `retries` INT NOT NULL,
   `waitTimeMinutes` INT NOT NULL,
   `lastRetry` TIMESTAMP,

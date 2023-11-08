@@ -84,21 +84,20 @@ export default class AuthRouter {
 				if (timeElapsed < waitTimeSeconds) {
 					return res.json({
 						error: "waittime_not_over",
+						waitTimeSeconds,
 						timeElapsed
 					})
-				} else {
-					await api.database.login_retries.decrememtRetryCount(req.ip)
 				}
 			}
 
 			const user = await api.database.user.getByEmail(email)
 			if (!user) {
-				return res.json({error: "user_not_found"})
+				return res.json({error: "login_failed"})
 			}
 
 			if (!(await argon2.verify(user.password, password))) {
 				if (retryData) {
-					if (retryData.retries + 1 == 4) {
+					if (retryData.retries == 3) {
 						await api.database.login_retries.initWaitTime(req.ip)
 					}
 					await api.database.login_retries.incrementRetryCount(req.ip)

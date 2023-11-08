@@ -9,7 +9,6 @@ import {Link, redirect} from "react-router-dom"
 export class SensorOverviewPanel extends Component {
 	constructor(props) {
 		super(props)
-		console.log(props)
 	}
 
 	render() {

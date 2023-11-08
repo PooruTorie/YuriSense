@@ -21,7 +21,8 @@
 		"react-simple-captcha": "^9.3.0",
 		"react-password-strength-bar": "^0.4.1",
 		"react-spinners": "^0.13.8",
-		"react-modal": "^3.16.1"
+		"react-modal": "^3.16.1",
+		"react-confetti-explosion": "^2.1.2"
 	},
 	"scripts": {
 		"analyze": "source-map-explorer 'build/static/js/*.js'",
