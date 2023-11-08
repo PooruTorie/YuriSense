@@ -95,7 +95,7 @@ export default class TemperatureOverview extends RealtimeComponent {
 
 			average = Math.round(sum / filteredData.length)
 
-			max = parseFloat(filteredData[0].Temperature) 
+			max = parseFloat(filteredData[0].Temperature)
 			for (let i = 1; i < parseFloat(filteredData.length); i++) {
 				if (parseFloat(filteredData[i].Temperature) > max) {
 					max = parseFloat(filteredData[i].Temperature)
