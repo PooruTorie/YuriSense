@@ -10,10 +10,10 @@ function createWindow() {
 
 	win.setMenu(null)
 
-	//win.loadURL("http://192.168.1.10/admin")
-	win.loadURL("http://localhost/admin")
+	//win.loadURL("http://192.168.1.11/admin")
+	win.loadURL("http://yurisen.se/admin")
 	// Open the DevTools.
-	win.webContents.openDevTools({mode: "detach"})
+	//win.webContents.openDevTools({mode: "detach"})
 }
 
 // This method will be called when Electron has finished
